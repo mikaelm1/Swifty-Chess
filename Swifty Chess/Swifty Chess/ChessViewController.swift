@@ -22,11 +22,15 @@ class ChessViewController: UIViewController {
         cv.backgroundColor = .blue
         return cv
     }()
+    
+    var chessBoard: ChessBoard!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
+        chessBoard = ChessBoard()
+        
         setupBoard()
     }
     
@@ -58,16 +62,33 @@ extension ChessViewController: UICollectionViewDelegate, UICollectionViewDataSou
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chessCell", for: indexPath) as! ChessCell
         
         // The sections will be the rows and the items will be the columns
+        let piece = chessBoard.board[indexPath.section][indexPath.item]
+        cell.pieceLabel.text = piece.symbol
+        cell.pieceLabel.textColor = piece.color
+        
+        // Set up the board colors
         if (indexPath.item % 2 == 0 && indexPath.section % 2 == 0) || (indexPath.item % 2 != 0 && indexPath.section % 2 != 0) {
-            cell.backgroundColor = UIColor(white: 0.8, alpha: 1)
+            cell.backgroundColor = #colorLiteral(red: 0.5787474513, green: 0.3215198815, blue: 0, alpha: 1)
         } else {
-            cell.backgroundColor = UIColor(white: 0.25, alpha: 1)
+            cell.backgroundColor = #colorLiteral(red: 1, green: 0.8323456645, blue: 0.4732058644, alpha: 1)
         }
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected item: \(indexPath.item) In Section: \(indexPath.section)")
+        print("Selected piece: \(chessBoard.board[indexPath.section][indexPath.item].symbol)")
+        
+        // TODO: Get the possible moves from the chess board model and highlight them
+        let possibleMoves = [chessBoard.board[0][0], chessBoard.board[0][1]]
+        for move in possibleMoves {
+            let cellIndex = IndexPath(row: move.row, section: move.col)
+            let cell = collectionView.cellForItem(at: cellIndex) as! ChessCell
+            cell.layer.borderColor = UIColor.green.cgColor
+            cell.layer.borderWidth = 2
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -80,10 +101,27 @@ extension ChessViewController: UICollectionViewDelegate, UICollectionViewDataSou
 
 class ChessCell: UICollectionViewCell {
     
+    var pieceLabel: UILabel = {
+        let l = UILabel()
+        l.translatesAutoresizingMaskIntoConstraints = false
+        l.textAlignment = .center
+        l.font = UIFont.systemFont(ofSize: 25)
+        l.textColor = .black
+        return l
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .red
+        setupViews()
+    }
+    
+    func setupViews() {
+        addSubview(pieceLabel)
+        pieceLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        pieceLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
+        pieceLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
+        pieceLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
