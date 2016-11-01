@@ -21,6 +21,7 @@
 		70C84AC51DC56AE0000F2BD9 /* Queen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AC41DC56AE0000F2BD9 /* Queen.swift */; };
 		70C84AC71DC56B0A000F2BD9 /* King.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AC61DC56B0A000F2BD9 /* King.swift */; };
 		70C84AC91DC8173F000F2BD9 /* BoardIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AC81DC8173F000F2BD9 /* BoardIndex.swift */; };
+		70C84ACB1DC81DE0000F2BD9 /* ChessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84ACA1DC81DE0000F2BD9 /* ChessCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		70C84AC41DC56AE0000F2BD9 /* Queen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queen.swift; sourceTree = "<group>"; };
 		70C84AC61DC56B0A000F2BD9 /* King.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = King.swift; sourceTree = "<group>"; };
 		70C84AC81DC8173F000F2BD9 /* BoardIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardIndex.swift; sourceTree = "<group>"; };
+		70C84ACA1DC81DE0000F2BD9 /* ChessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChessCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 		70C84AB31DC44600000F2BD9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				70C84ACA1DC81DE0000F2BD9 /* ChessCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 				70C84AC01DC4519B000F2BD9 /* Knight.swift in Sources */,
 				70C84AC21DC56AA0000F2BD9 /* Bishop.swift in Sources */,
 				70C84AC71DC56B0A000F2BD9 /* King.swift in Sources */,
+				70C84ACB1DC81DE0000F2BD9 /* ChessCell.swift in Sources */,
 				70C84AC51DC56AE0000F2BD9 /* Queen.swift in Sources */,
 				7076DB651DC43B2800F01924 /* AppDelegate.swift in Sources */,
 				70C84ABA1DC446C2000F2BD9 /* Pawn.swift in Sources */,

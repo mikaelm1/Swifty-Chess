@@ -127,34 +127,5 @@ extension ChessViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
 }
 
-class ChessCell: UICollectionViewCell {
-    
-    var pieceLabel: UILabel = {
-        let l = UILabel()
-        l.translatesAutoresizingMaskIntoConstraints = false
-        l.textAlignment = .center
-        l.font = UIFont.systemFont(ofSize: 25)
-        l.textColor = .black
-        return l
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        setupViews()
-    }
-    
-    func setupViews() {
-        addSubview(pieceLabel)
-        pieceLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
-        pieceLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
-        pieceLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
-        pieceLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-}
+
 
