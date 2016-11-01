@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BoardIndex {
+class BoardIndex: Equatable {
     
     var row: Int
     var column: Int
@@ -16,6 +16,10 @@ class BoardIndex {
     init(row: Int, column: Int) {
         self.row = row
         self.column = column
+    }
+    
+    static func ==(lhs: BoardIndex, rhs: BoardIndex) -> Bool {
+        return lhs.row == rhs.row && lhs.column == rhs.column
     }
     
 }

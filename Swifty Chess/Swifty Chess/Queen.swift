@@ -18,4 +18,20 @@ class Queen: ChessPiece {
         
     }
     
+    /** Checks to see if the direction the piece is moving is the way this piece type is allowed to move. Doesn't take into account the sate of the board */
+    func isMovementAppropriate(toIndex dest: BoardIndex) -> Bool {
+        
+        // check diagonal move
+        if abs(dest.row - self.row) == abs(dest.column - self.col) {
+            return true
+        }
+        
+        // check rook-like move 
+        if self.row == dest.row || self.col == dest.column {
+            return true 
+        }
+        
+        return false
+    }
+    
 }

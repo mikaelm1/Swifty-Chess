@@ -33,6 +33,16 @@ class ChessCell: UICollectionViewCell {
         pieceLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
     }
     
+    func setAsPossibleMoveLocation() {
+        layer.borderColor = UIColor.green.cgColor
+        layer.borderWidth = 2
+    }
+    
+    func removeHighlighting() {
+        layer.borderColor = UIColor.clear.cgColor
+        layer.borderWidth = 0
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

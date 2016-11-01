@@ -18,4 +18,13 @@ class Bishop: ChessPiece {
         
     }
     
+    /** Checks to see if the direction the piece is moving is the way this piece type is allowed to move. Doesn't take into account the sate of the board */
+    func isMovementAppropriate(toIndex dest: BoardIndex) -> Bool {
+        
+        if abs(dest.row - self.row) == abs(dest.column - self.col) {
+            return true
+        }
+        return false
+    }
+    
 }
