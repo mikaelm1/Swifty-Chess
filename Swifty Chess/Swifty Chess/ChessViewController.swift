@@ -24,6 +24,8 @@ class ChessViewController: UIViewController {
     }()
     
     var chessBoard: ChessBoard!
+    var isMakingAMove = false
+    var chessPieceToBeMoved: ChessPiece?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,10 +33,10 @@ class ChessViewController: UIViewController {
         view.backgroundColor = .white
         chessBoard = ChessBoard()
         
-        setupBoard()
+        setupViews()
     }
     
-    func setupBoard() {
+    func setupViews() {
         view.addSubview(chessCollectionView)
         
         chessCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
@@ -77,17 +79,43 @@ extension ChessViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected item: \(indexPath.item) In Section: \(indexPath.section)")
-        print("Selected piece: \(chessBoard.board[indexPath.section][indexPath.item].symbol)")
+        //print("Selected item: \(indexPath.item) In Section: \(indexPath.section)")
+        //print("Selected piece: \(chessBoard.board[indexPath.section][indexPath.item].symbol)")
         
-        // TODO: Get the possible moves from the chess board model and highlight them
-        let possibleMoves = [chessBoard.board[0][0], chessBoard.board[0][1]]
-        for move in possibleMoves {
-            let cellIndex = IndexPath(row: move.row, section: move.col)
-            let cell = collectionView.cellForItem(at: cellIndex) as! ChessCell
-            cell.layer.borderColor = UIColor.green.cgColor
-            cell.layer.borderWidth = 2
+        if !isMakingAMove {
+            // tapped on a piece. Show possible moves
+            isMakingAMove = true
+            
+            let selectedCell = collectionView.cellForItem(at: indexPath)
+            selectedCell?.backgroundColor = .red
+            
+            chessPieceToBeMoved = chessBoard.board[indexPath.section][indexPath.item]
+            print(chessPieceToBeMoved?.symbol)
+            
+            // TODO: Get the possible moves from the chess board model and highlight them
+            let possibleMoves = [chessBoard.board[0][0], chessBoard.board[0][1]]
+            for move in possibleMoves {
+                let cellIndex = IndexPath(row: move.row, section: move.col)
+                let cell = collectionView.cellForItem(at: cellIndex) as! ChessCell
+                cell.layer.borderColor = UIColor.green.cgColor
+                cell.layer.borderWidth = 2
+            }
+        } else {
+            isMakingAMove = false
+            // If tapped one of available moves, move piece there
+            //let selectedCellToMoveTo = collectionView.cellForItem(at: indexPath)
+            
+            let destinationIndex = BoardIndex(row: indexPath.section, column: indexPath.item)
+            if let piece = chessPieceToBeMoved {
+                let sourceIndex = BoardIndex(row: piece.row, column: piece.col)
+                chessBoard.move(chessPiece: piece, fromIndex: sourceIndex, toIndex: destinationIndex)
+            }
+            
+            // If tapped on another own piece, then switch highlight to that
+            
+            chessCollectionView.reloadData()
         }
+        
         
     }
     

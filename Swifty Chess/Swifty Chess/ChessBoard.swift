@@ -69,4 +69,13 @@ class ChessBoard {
         }
     }
     
+    func getPossibleMoves() {
+        
+    }
+    
+    func move(chessPiece: ChessPiece, fromIndex source: BoardIndex, toIndex dest: BoardIndex) {
+        board[dest.row][dest.column] = chessPiece
+        board[source.row][source.column] = DummyPiece(row: source.row, column: source.column)
+    }
+    
 }
