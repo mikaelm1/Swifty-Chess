@@ -8,11 +8,17 @@
 
 import UIKit
 
+protocol BoardCellDelegate {
+    func didSelect(cell: BoardCell, atRow row: Int, andColumn col: Int)
+}
+
 class BoardCell: UIView {
     
     var row: Int
     var column: Int
     var piece: ChessPiece
+    var color: UIColor
+    var delegate: ChessVC?
     
     lazy var invisibleButton: UIButton = {
         let b = UIButton(type: .system)
@@ -29,11 +35,13 @@ class BoardCell: UIView {
         return l
     }()
     
-    init(row: Int, column: Int, piece: ChessPiece) {
+    init(row: Int, column: Int, piece: ChessPiece, color: UIColor) {
         self.row = row
         self.column = column
         self.piece = piece
+        self.color = color
         super.init(frame: .zero)
+        self.backgroundColor = color
         setupViews()
         
         pieceLabel.text = piece.symbol
@@ -54,8 +62,19 @@ class BoardCell: UIView {
         pieceLabel.heightAnchor.constraint(equalTo: heightAnchor, constant: 0).isActive = true
     }
     
+    func setAsPossibleLocation() {
+        backgroundColor = UIColor.blue.withAlphaComponent(0.5)
+    }
+    
+    func removeHighlighting() {
+//        layer.borderColor = UIColor.clear.cgColor
+//        layer.borderWidth = 0
+        backgroundColor = color
+    }
+    
     func selectedCell(sender: UIButton) {
-        print("Selected cell at: \(row), \(column)")
+        //print("Selected cell at: \(row), \(column)")
+        delegate?.didSelect(cell: self, atRow: row, andColumn: column)
     }
     
     required init?(coder aDecoder: NSCoder) {

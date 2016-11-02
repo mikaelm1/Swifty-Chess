@@ -80,12 +80,15 @@ class ChessBoard {
         return destPiece.color == attackingPiece.color
     }
     
-    func isMoveLegal(forPiece piece: ChessPiece, fromIndex source: BoardIndex, toIndex dest: BoardIndex) -> Bool {
+    func isMoveLegal(forPiece piece: ChessPiece, toIndex dest: BoardIndex) -> Bool {
         
-        // Check for wether attacking own peice is done prior to this
+        // WRONG: Check for wether attacking own peice is done prior to this
+        if isAttackingOwnPiece(attackingPiece: piece, atIndex: dest) {
+            return false 
+        }
         
-        guard source != dest else {
-            print("Moving on itself")
+        if piece.col == dest.column && piece.row == dest.row {
+            //print("Moving on itself")
             return false
         }
         
@@ -97,7 +100,7 @@ class ChessBoard {
         case is Knight:
             // The knight doesn't care about the state of the board because
             // it jumps over pieces. So there is no piece in the way for example
-            if !(piece as! Knight).isMovementAppropriate(fromIndex: source, toIndex: dest) {
+            if !(piece as! Knight).isMovementAppropriate(toIndex: dest) {
                 return false
             }
         case is King:
@@ -106,17 +109,16 @@ class ChessBoard {
             break 
         }
         
-        return false
+        return true
     }
     
     func getPossibleMoves(forPiece piece: ChessPiece) -> [BoardIndex] {
         
         var possibleMoves = [BoardIndex]()
-        let source = BoardIndex(row: piece.row, column: piece.col)
         for row in 0...7 {
             for col in 0...7 {
                 let dest = BoardIndex(row: row, column: col)
-                if isMoveLegal(forPiece: piece, fromIndex: source, toIndex: dest) {
+                if isMoveLegal(forPiece: piece, toIndex: dest) {
                     possibleMoves.append(dest)
                 }
             }
