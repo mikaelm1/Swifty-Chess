@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		70725B4F1DC9784F00C1A506 /* BoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70725B4E1DC9784F00C1A506 /* BoardCell.swift */; };
 		7076DB651DC43B2800F01924 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7076DB641DC43B2800F01924 /* AppDelegate.swift */; };
 		7076DB671DC43B2800F01924 /* ChessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7076DB661DC43B2800F01924 /* ChessViewController.swift */; };
 		7076DB6C1DC43B2800F01924 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7076DB6B1DC43B2800F01924 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		70725B4E1DC9784F00C1A506 /* BoardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardCell.swift; sourceTree = "<group>"; };
 		7076DB611DC43B2800F01924 /* Swifty Chess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swifty Chess.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7076DB641DC43B2800F01924 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7076DB661DC43B2800F01924 /* ChessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				70C84ACA1DC81DE0000F2BD9 /* ChessCell.swift */,
+				70725B4E1DC9784F00C1A506 /* BoardCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 				70C84AC71DC56B0A000F2BD9 /* King.swift in Sources */,
 				70C84ACB1DC81DE0000F2BD9 /* ChessCell.swift in Sources */,
 				70C84AC51DC56AE0000F2BD9 /* Queen.swift in Sources */,
+				70725B4F1DC9784F00C1A506 /* BoardCell.swift in Sources */,
 				7076DB651DC43B2800F01924 /* AppDelegate.swift in Sources */,
 				70C84ABA1DC446C2000F2BD9 /* Pawn.swift in Sources */,
 				70C84AB81DC44643000F2BD9 /* ChessPiece.swift in Sources */,
