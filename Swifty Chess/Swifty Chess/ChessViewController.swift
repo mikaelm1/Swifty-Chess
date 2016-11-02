@@ -53,7 +53,7 @@ class ChessViewController: UIViewController {
     }
     
     func dummyTapped(sender: UIButton) {
-        let vc = ChessVC2()
+        let vc = ChessVC()
         present(vc, animated: true, completion: nil)
     }
     
