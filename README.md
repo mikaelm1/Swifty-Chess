@@ -1,2 +1,2 @@
 # Swifty-Chess
-Multiplayer Chess Game
+Multiplayer Chess Game [In Progress]
