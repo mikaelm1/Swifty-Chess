@@ -16,9 +16,16 @@ class ChessVC: UIViewController {
     var possibleMoves = [BoardIndex]()
     var playerTurn = UIColor.white
     
-    let infoLabel: UILabel = {
+    let turnLabel: UILabel = {
         let l = UILabel()
         l.translatesAutoresizingMaskIntoConstraints = false
+        return l
+    }()
+    
+    let checkLabel: UILabel = {
+        let l = UILabel()
+        l.translatesAutoresizingMaskIntoConstraints = false
+        l.textColor = .red
         return l
     }()
     
@@ -62,14 +69,18 @@ class ChessVC: UIViewController {
     }
     
     func setupViews() {
-        view.addSubview(infoLabel)
-        infoLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
-        infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        view.addSubview(turnLabel)
+        turnLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        turnLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        
+        view.addSubview(checkLabel)
+        checkLabel.bottomAnchor.constraint(equalTo: turnLabel.topAnchor, constant: -10).isActive = true
+        checkLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
     }
     
     func updateLabel() {
         let color = playerTurn == .white ? "White" : "Black"
-        infoLabel.text = "\(color) player's turn"
+        turnLabel.text = "\(color) player's turn"
     }
 
 }
@@ -92,6 +103,11 @@ extension ChessVC: BoardCellDelegate {
                     drawBoard()
                     pieceBeingMoved = nil
                     playerTurn = playerTurn == .white ? .black : .white
+                    if chessBoard.isPlayerUnderCheck(playerColor: playerTurn) {
+                        checkLabel.text = "You are in check"
+                    } else {
+                        checkLabel.text = ""
+                    }
                     updateLabel()
                     return
                 }
@@ -108,7 +124,8 @@ extension ChessVC: BoardCellDelegate {
                 possibleMoves = chessBoard.getPossibleMoves(forPiece: cell.piece)
                 highligtPossibleMoves()
             }
-        } else {
+        } else { // not already moving piece
+    
             if cell.piece.color == playerTurn {
                 // selected another piece to play
                 cell.backgroundColor = .red
@@ -117,7 +134,7 @@ extension ChessVC: BoardCellDelegate {
                 possibleMoves = chessBoard.getPossibleMoves(forPiece: cell.piece)
                 highligtPossibleMoves()
             } else {
-                // tapped on either emtpy cell or enemy piece
+                // tapped on either emtpy cell or enemy piece, ignore
             }
             
         }

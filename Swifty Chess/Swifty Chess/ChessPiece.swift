@@ -18,7 +18,7 @@ class ChessPiece {
     init(row: Int, column: Int) {
         self.row = row
         self.col = column
-        self.symbol = ""
+        self.symbol = "   "
         self.color = .clear 
     }
     

@@ -10,7 +10,7 @@ import UIKit
 
 class ChessBoard {
     
-    var board: [[ChessPiece]]!
+    var board = [[ChessPiece]]()
     
     init() {
         
@@ -67,6 +67,7 @@ class ChessBoard {
                 }
             }
         }
+        //printBoard()
     }
     
     func isAttackingOwnPiece(attackingPiece: ChessPiece, atIndex dest: BoardIndex) -> Bool {
@@ -82,7 +83,7 @@ class ChessBoard {
     
     func isMoveLegal(forPiece piece: ChessPiece, toIndex dest: BoardIndex) -> Bool {
         
-        // WRONG: Check for wether attacking own peice is done prior to this
+        // TODO: Possibly a bug. Maybe should be checked before getting here
         if isAttackingOwnPiece(attackingPiece: piece, atIndex: dest) {
             return false 
         }
@@ -91,6 +92,10 @@ class ChessBoard {
             //print("Moving on itself")
             return false
         }
+        
+//        if !(piece is King) && doesMoveExposeKingToCheck(playerPiece: piece, toIndex: dest) {
+//            return false
+//        }
         
         switch piece {
         case is Pawn:
@@ -124,7 +129,19 @@ class ChessBoard {
             }
         }
         
-        return possibleMoves
+        var realPossibleMoves = [BoardIndex]()
+        //print("Checking \(possibleMoves.count) moves")
+        for move in possibleMoves {
+            //print("BEFORE")
+            //printBoard()
+            if !doesMoveExposeKingToCheck(playerPiece: piece, toIndex: move) {
+                realPossibleMoves.append(move)
+            }
+            //print("AFTER")
+            //printBoard()
+        }
+        //print("\(realPossibleMoves.count) real moves")
+        return realPossibleMoves
     }
     
     func move(chessPiece: ChessPiece, fromIndex source: BoardIndex, toIndex dest: BoardIndex) {
@@ -136,6 +153,7 @@ class ChessBoard {
         // update piece's location variables
         chessPiece.row = dest.row
         chessPiece.col = dest.column
+        //printBoard()
     }
     
     // MARK: - Move validations per piece type 
@@ -234,7 +252,7 @@ class ChessBoard {
         return true
     }
     
-    func isAnotherKing(atIndex dest: BoardIndex, forKing king: King) -> Bool {
+    private func isAnotherKing(atIndex dest: BoardIndex, forKing king: King) -> Bool {
         
         let opponentColor = king.color == UIColor.white ? UIColor.black : UIColor.white
         // Get other king's index
@@ -254,10 +272,129 @@ class ChessBoard {
         if (rowDiff == 0 || rowDiff == 1) && (colDiff == 0 || colDiff == 1) {
             return true
         }
-        print("Not near opponent")
+        //print("Not near opponent")
         return false
         
     }
+    
+    /// Returns true if current player is under check, false otherwise
+    func isPlayerUnderCheck(playerColor: UIColor) -> Bool {
+        
+        guard let playerKing = getKing(forColor: playerColor) else {
+            print("Something is seriously wrong")
+            return false
+        }
+        
+        let opponentColor: UIColor = playerColor == .white ? .black : .white
+        
+        return isKingUnderUnderCheck(king: playerKing, byOpponent: opponentColor)
+    }
+    
+    private func getKing(forColor color: UIColor) -> King? {
+        if color == .white {
+            //print("Looking for white king")
+        } else if color == .black {
+            //print("looking for black king")
+        }
+        for row in 0...7 {
+            for col in 0...7 {
+                if let king = board[row][col] as? King, king.color == color {
+                    return king
+                }
+            }
+        }
+        // should never get here
+        print("Did not find king")
+        return nil
+    }
+    
+    /// returns true if player's king is under check, false otherwise
+    private func isKingUnderUnderCheck(king: King, byOpponent color: UIColor) -> Bool {
+        
+        let kingIndex = BoardIndex(row: king.row, column: king.col)
+        for row in 0...7 {
+            for col in 0...7 {
+                if board[row][col].color == color {
+                    if isMoveLegal(forPiece: board[row][col], toIndex: kingIndex) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+    
+    /// Simulates the move and returns true if making it will expose the player to a check
+    func doesMoveExposeKingToCheck(playerPiece piece: ChessPiece, toIndex dest: BoardIndex) -> Bool {
+        
+        // make a copy of the board to simulate movement
+//        var boardCopy = getDuplicateBoard()
+//        boardCopy[dest.row][dest.column] = piece
+//        boardCopy[piece.row][piece.col] = DummyPiece(row: piece.row, column: piece.col)
+        let opponent: UIColor = piece.color == UIColor.white ? .black : .white
+        //print("Cecking \(piece.color) \(piece.symbol) at [\(piece.row), \(piece.col)] trying to move to [\(dest.row), \(dest.column)")
+        if piece.color == .white {
+            //print("WHITE")
+        } else if piece.color == .black {
+            //print("BLACK")
+        }
+        guard let playerKing = getKing(forColor: piece.color) else {
+            print("Something wrong in doesMoveExposeKingToCheck. Logic error")
+            return false
+        }
+        //print("Piece index before: \(piece.row), \(piece.col)")
+
+        
+        let kingIndex = BoardIndex(row: playerKing.row, column: playerKing.col)
+        //print("King index: \(kingIndex.row), \(kingIndex.column)")
+        // can opponent attack own king if player makes this move?
+        for row in 0...7 {
+            for col in 0...7 {
+                
+                // "place" piece at the destination it's actually trying to go
+                let pieceBeingAttacked = board[dest.row][dest.column]
+                board[dest.row][dest.column] = piece
+                board[piece.row][piece.col] = DummyPiece(row: piece.row, column: piece.col)
+                
+                if board[row][col].color == opponent {
+                    if isMoveLegal(forPiece: board[row][col], toIndex: kingIndex) {
+                        //print("\(board[row][col].symbol) can attack your king!")
+                        // undo fake move
+                        board[dest.row][dest.column] = pieceBeingAttacked
+                        board[piece.row][piece.col] = piece
+                        return true
+                    }
+                }
+                
+                // undo fake move
+                board[dest.row][dest.column] = pieceBeingAttacked
+                board[piece.row][piece.col] = piece
+            }
+        }
+
+        
+        //print("Piece index after: \(piece.row), \(piece.col)")
+        return false
+    }
+    
+    /*
+    private func getDuplicateBoard() -> [[ChessPiece]] {
+        var duplicate = [[ChessPiece]]()
+        let oneRow = Array(repeating: DummyPiece(row: 0, column: 0), count: 8)
+        duplicate = Array(repeating: oneRow, count: 8)
+        return duplicate
+    }
+    */
+    
+    func printBoard() {
+        print(String(repeating: "=", count: 40))
+        for row in 0...7 {
+            let bRow = board[row].map {$0.symbol}
+            print(bRow)
+        }
+        print(String(repeating: "=", count: 40))
+    }
+    
     
 }
 
