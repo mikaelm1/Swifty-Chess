@@ -14,17 +14,24 @@ class ChessVC: UIViewController {
     var boardCells = [[BoardCell]]()
     var pieceBeingMoved: ChessPiece? = nil
     var possibleMoves = [BoardIndex]()
+    var playerTurn = UIColor.white
+    
+    let infoLabel: UILabel = {
+        let l = UILabel()
+        l.translatesAutoresizingMaskIntoConstraints = false
+        return l
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
         drawBoard()
+        setupViews()
     }
     
-    
     func drawBoard() {
-        let oneRow = Array(repeating: BoardCell(row: 5, column: 5, piece: DummyPiece(row: 5, column: 5), color: .white), count: 8)
+        let oneRow = Array(repeating: BoardCell(row: 5, column: 5, piece: DummyPiece(row: 5, column: 5), color: .clear), count: 8)
         boardCells = Array(repeating: oneRow, count: 8)
         let cellDimension = (view.frame.size.width - 8) / 8
         var xOffset: CGFloat = 10
@@ -51,6 +58,18 @@ class ChessVC: UIViewController {
                 cell.removeHighlighting()
             }
         }
+        updateLabel()
+    }
+    
+    func setupViews() {
+        view.addSubview(infoLabel)
+        infoLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+    }
+    
+    func updateLabel() {
+        let color = playerTurn == .white ? "White" : "Black"
+        infoLabel.text = "\(color) player's turn"
     }
 
 }
@@ -61,7 +80,7 @@ extension ChessVC: BoardCellDelegate {
         print("Selected cell at: \(row), \(col)")
         
         // Check if making a move (if had selected piece before)
-        if let movingPiece = pieceBeingMoved {
+        if let movingPiece = pieceBeingMoved, movingPiece.color == playerTurn {
             let source = BoardIndex(row: movingPiece.row, column: movingPiece.col)
             let dest = BoardIndex(row: row, column: col)
             
@@ -72,6 +91,8 @@ extension ChessVC: BoardCellDelegate {
                     chessBoard.move(chessPiece: movingPiece, fromIndex: source, toIndex: dest)
                     drawBoard()
                     pieceBeingMoved = nil
+                    playerTurn = playerTurn == .white ? .black : .white
+                    updateLabel()
                     return
                 }
             }
@@ -88,14 +109,20 @@ extension ChessVC: BoardCellDelegate {
                 highligtPossibleMoves()
             }
         } else {
-            // selected piece to be moved
-            cell.backgroundColor = .red
-            pieceBeingMoved = cell.piece
-            removeHighlights()
-            possibleMoves = chessBoard.getPossibleMoves(forPiece: cell.piece)
-            highligtPossibleMoves()
+            if cell.piece.color == playerTurn {
+                // selected another piece to play
+                cell.backgroundColor = .red
+                pieceBeingMoved = cell.piece
+                removeHighlights()
+                possibleMoves = chessBoard.getPossibleMoves(forPiece: cell.piece)
+                highligtPossibleMoves()
+            } else {
+                // tapped on either emtpy cell or enemy piece
+            }
+            
         }
         
+        updateLabel()
     }
     
     func highligtPossibleMoves() {

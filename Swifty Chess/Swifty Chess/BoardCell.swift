@@ -67,8 +67,6 @@ class BoardCell: UIView {
     }
     
     func removeHighlighting() {
-//        layer.borderColor = UIColor.clear.cgColor
-//        layer.borderWidth = 0
         backgroundColor = color
     }
     

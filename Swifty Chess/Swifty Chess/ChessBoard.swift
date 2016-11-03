@@ -237,7 +237,6 @@ class ChessBoard {
     func isAnotherKing(atIndex dest: BoardIndex, forKing king: King) -> Bool {
         
         let opponentColor = king.color == UIColor.white ? UIColor.black : UIColor.white
-        
         // Get other king's index
         var otherKingIndex: BoardIndex!
         for row in 0...7 {
@@ -252,10 +251,10 @@ class ChessBoard {
         // compute absolute difference between the kings
         let rowDiff = abs(otherKingIndex.row - king.row)
         let colDiff = abs(otherKingIndex.column - king.col)
-        if rowDiff == 0 || rowDiff == 1 || colDiff == 0 || colDiff == 1 {
+        if (rowDiff == 0 || rowDiff == 1) && (colDiff == 0 || colDiff == 1) {
             return true
         }
-        
+        print("Not near opponent")
         return false
         
     }
