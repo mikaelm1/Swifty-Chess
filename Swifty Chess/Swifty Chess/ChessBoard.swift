@@ -23,6 +23,10 @@ class ChessBoard {
         let oneRow = Array(repeating: DummyPiece(row: 0, column: 0), count: 8)
         board = Array(repeating: oneRow, count: 8)
         
+        startNewGame()
+    }
+    
+    func startNewGame() {
         for row in 0...7 {
             for col in 0...7 {
                 switch row {
@@ -73,7 +77,7 @@ class ChessBoard {
                 }
             }
         }
-        //printBoard()
+        delegate?.boardUpdated()
     }
     
     func isAttackingOwnPiece(attackingPiece: ChessPiece, atIndex dest: BoardIndex) -> Bool {

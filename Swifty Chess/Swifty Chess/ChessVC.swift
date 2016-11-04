@@ -196,12 +196,12 @@ extension ChessVC: ChessBoardDelegate {
     func showGameOverMessage(forWinner winner: String) {
         let ac = UIAlertController(title: "Game Over", message: "\(winner) player won the game. Play again?", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ok", style: .default, handler: { action in
-            self.startGame()
+            self.chessBoard.startNewGame()
         })
         let noAction = UIAlertAction(title: "No", style: .default, handler: { action in
             
             print("Too bad. That's all we can do right now. Haven't added another scene yet")
-            self.startGame()
+            self.chessBoard.startNewGame()
         })
         
         ac.addAction(okAction)
