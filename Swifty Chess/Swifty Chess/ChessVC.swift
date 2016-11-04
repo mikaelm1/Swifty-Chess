@@ -39,6 +39,11 @@ class ChessVC: UIViewController {
         setupViews()
     }
     
+    func startGame() {
+        //chessBoard = ChessBoard()
+        //drawBoard()
+    }
+    
     func drawBoard() {
         let oneRow = Array(repeating: BoardCell(row: 5, column: 5, piece: DummyPiece(row: 5, column: 5), color: .clear), count: 8)
         boardCells = Array(repeating: oneRow, count: 8)
@@ -101,9 +106,9 @@ extension ChessVC: BoardCellDelegate {
             for move in possibleMoves {
                 if move.row == row && move.column == col {
                     
-                    print(chessBoard.board[cell.row][cell.column].symbol)
+                    //print(chessBoard.board[cell.row][cell.column].symbol)
                     chessBoard.move(chessPiece: movingPiece, fromIndex: source, toIndex: dest)
-                    print(chessBoard.board[cell.row][cell.column].symbol)
+                    //print(chessBoard.board[cell.row][cell.column].symbol)
                     //drawBoard()
                     
                     pieceBeingMoved = nil
@@ -114,7 +119,7 @@ extension ChessVC: BoardCellDelegate {
                         checkLabel.text = ""
                     }
                     updateLabel()
-                    print("The old cell now holds: \(cell.piece.symbol)")
+                    //print("The old cell now holds: \(cell.piece.symbol)")
                     return
                 }
             }
@@ -178,6 +183,30 @@ extension ChessVC: ChessBoardDelegate {
             }
         }
         
+    }
+    
+    func gameOver(withWinner winner: UIColor) {
+        if winner == .white {
+            showGameOverMessage(forWinner: "White")
+        } else if winner == .black {
+            showGameOverMessage(forWinner: "Black")
+        }
+    }
+    
+    func showGameOverMessage(forWinner winner: String) {
+        let ac = UIAlertController(title: "Game Over", message: "\(winner) player won the game. Play again?", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: { action in
+            self.startGame()
+        })
+        let noAction = UIAlertAction(title: "No", style: .default, handler: { action in
+            
+            print("Too bad. That's all we can do right now. Haven't added another scene yet")
+            self.startGame()
+        })
+        
+        ac.addAction(okAction)
+        ac.addAction(noAction)
+        present(ac, animated: true, completion: nil)
     }
     
 }

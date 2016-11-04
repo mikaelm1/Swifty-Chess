@@ -22,4 +22,14 @@ class ChessPiece {
         self.color = .clear 
     }
     
+    func printInfo() -> String {
+        var pColor = "Clear"
+        if color == .white {
+            pColor = "White"
+        } else if color == .black {
+            pColor = "Black"
+        }
+        return "\(pColor) \(symbol)"
+    }
+    
 }

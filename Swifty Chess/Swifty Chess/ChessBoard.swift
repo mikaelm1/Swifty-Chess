@@ -10,6 +10,7 @@ import UIKit
 
 protocol ChessBoardDelegate {
     func boardUpdated()
+    func gameOver(withWinner winner: UIColor)
 }
 
 class ChessBoard {
@@ -86,6 +87,7 @@ class ChessBoard {
         return destPiece.color == attackingPiece.color
     }
     
+    /// All move validations start here
     func isMoveLegal(forPiece piece: ChessPiece, toIndex dest: BoardIndex) -> Bool {
         
         // TODO: Possibly a bug. Maybe should be checked before getting here
@@ -137,15 +139,24 @@ class ChessBoard {
         // make sure that by making this move, the player is not exposing his king
         var realPossibleMoves = [BoardIndex]()
         //print("Checking \(possibleMoves.count) moves")
-        for move in possibleMoves {
-            //print("BEFORE")
-            //printBoard()
-            if !doesMoveExposeKingToCheck(playerPiece: piece, toIndex: move) {
-                realPossibleMoves.append(move)
+        if piece is King {
+            for move in possibleMoves {
+                if !canOpponentAttack(playerKing: piece as! King, ifMovedTo: move) {
+                    realPossibleMoves.append(move)
+                }
             }
-            //print("AFTER")
-            //printBoard()
+        } else {
+            for move in possibleMoves {
+                //print("BEFORE")
+                //printBoard()
+                if !doesMoveExposeKingToCheck(playerPiece: piece, toIndex: move) {
+                    realPossibleMoves.append(move)
+                }
+                //print("AFTER")
+                //printBoard()
+            }
         }
+        
         print("\(realPossibleMoves.count) real moves")
         return realPossibleMoves
     }
@@ -163,8 +174,7 @@ class ChessBoard {
         
         // check if by making this move, the player has won the game
         if isWinner(player: chessPiece.color) {
-            // TODO: Use delegate to inform view controller
-            print("YOU WON!!!!!!")
+            delegate?.gameOver(withWinner: chessPiece.color)
         }
         
         delegate?.boardUpdated()
@@ -266,6 +276,24 @@ class ChessBoard {
         return true
     }
     
+    func canOpponentAttack(playerKing king: King, ifMovedTo dest: BoardIndex) -> Bool {
+        
+        let opponent: UIColor = king.color == .white ? .black : .white
+        let kingIndex = BoardIndex(row: king.row, column: king.col)
+        for row in 0...7 {
+            for col in 0...7 {
+                let piece = board[row][col]
+                if piece.color == opponent {
+                    if isMoveLegal(forPiece: piece, toIndex: kingIndex) {
+                        return true
+                    }
+                }
+            }
+        }
+        
+        return false
+    }
+    
     private func isAnotherKing(atIndex dest: BoardIndex, forKing king: King) -> Bool {
         
         let opponentColor = king.color == UIColor.white ? UIColor.black : UIColor.white
@@ -342,12 +370,16 @@ class ChessBoard {
     func doesMoveExposeKingToCheck(playerPiece piece: ChessPiece, toIndex dest: BoardIndex) -> Bool {
 
         let opponent: UIColor = piece.color == UIColor.white ? .black : .white
+        // DEGUB Prints ============================
         //print("Cecking \(piece.color) \(piece.symbol) at [\(piece.row), \(piece.col)] trying to move to [\(dest.row), \(dest.column)")
+        let oColor = opponent == UIColor.white ? "White" : "Black"
         if piece.color == .white {
-            print("Checking white king")
+            //print("Checking white king against \(oColor) opponent")
+            
         } else if piece.color == .black {
-            print("Checking black king")
+            //print("Checking black king against \(oColor) opponent")
         }
+        // END DEBUG Prints ========================
         guard let playerKing = getKing(forColor: piece.color) else {
             print("Something wrong in doesMoveExposeKingToCheck. Logic error")
             return false
@@ -365,6 +397,7 @@ class ChessBoard {
                 let pieceBeingAttacked = board[dest.row][dest.column]
                 board[dest.row][dest.column] = piece
                 board[piece.row][piece.col] = DummyPiece(row: piece.row, column: piece.col)
+                //print("Piece being attacked: \(pieceBeingAttacked.printInfo()) by \(piece.printInfo())")
                 
                 if board[row][col].color == opponent {
                     if isMoveLegal(forPiece: board[row][col], toIndex: kingIndex) {
