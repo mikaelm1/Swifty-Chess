@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol ChessBoardDelegate {
+    func boardUpdated()
+}
+
 class ChessBoard {
     
     var board = [[ChessPiece]]()
+    var delegate: ChessVC?
     
     init() {
         
@@ -129,6 +134,7 @@ class ChessBoard {
             }
         }
         
+        // make sure that by making this move, the player is not exposing his king
         var realPossibleMoves = [BoardIndex]()
         //print("Checking \(possibleMoves.count) moves")
         for move in possibleMoves {
@@ -140,7 +146,7 @@ class ChessBoard {
             //print("AFTER")
             //printBoard()
         }
-        //print("\(realPossibleMoves.count) real moves")
+        print("\(realPossibleMoves.count) real moves")
         return realPossibleMoves
     }
     
@@ -154,6 +160,14 @@ class ChessBoard {
         chessPiece.row = dest.row
         chessPiece.col = dest.column
         //printBoard()
+        
+        // check if by making this move, the player has won the game
+        if isWinner(player: chessPiece.color) {
+            // TODO: Use delegate to inform view controller
+            print("YOU WON!!!!!!")
+        }
+        
+        delegate?.boardUpdated()
     }
     
     // MARK: - Move validations per piece type 
@@ -326,17 +340,13 @@ class ChessBoard {
     
     /// Simulates the move and returns true if making it will expose the player to a check
     func doesMoveExposeKingToCheck(playerPiece piece: ChessPiece, toIndex dest: BoardIndex) -> Bool {
-        
-        // make a copy of the board to simulate movement
-//        var boardCopy = getDuplicateBoard()
-//        boardCopy[dest.row][dest.column] = piece
-//        boardCopy[piece.row][piece.col] = DummyPiece(row: piece.row, column: piece.col)
+
         let opponent: UIColor = piece.color == UIColor.white ? .black : .white
         //print("Cecking \(piece.color) \(piece.symbol) at [\(piece.row), \(piece.col)] trying to move to [\(dest.row), \(dest.column)")
         if piece.color == .white {
-            //print("WHITE")
+            print("Checking white king")
         } else if piece.color == .black {
-            //print("BLACK")
+            print("Checking black king")
         }
         guard let playerKing = getKing(forColor: piece.color) else {
             print("Something wrong in doesMoveExposeKingToCheck. Logic error")
@@ -395,6 +405,22 @@ class ChessBoard {
         print(String(repeating: "=", count: 40))
     }
     
+    func isWinner(player color: UIColor) -> Bool {
+        
+        let opponent: UIColor = color == UIColor.white ? .black : .white
+        // check if the current player's move put opponent in check
+        if isPlayerUnderCheck(playerColor: opponent) {
+            // does opponent's king have any possible moves
+            guard let opponentKing = getKing(forColor: opponent) else {
+                print("Something seriously wrong in isWinner. DEBUG!!")
+                return false
+            }
+            let possibleMoves = getPossibleMoves(forPiece: opponentKing)
+            return possibleMoves.count == 0
+        }
+        
+        return false
+    }
     
 }
 

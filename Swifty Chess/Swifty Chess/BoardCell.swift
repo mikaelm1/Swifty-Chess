@@ -31,7 +31,8 @@ class BoardCell: UIView {
         let l = UILabel()
         l.translatesAutoresizingMaskIntoConstraints = false
         l.textAlignment = .center
-        l.font = UIFont.systemFont(ofSize: 24)
+        l.font = UIFont.systemFont(ofSize: 40)
+        l.minimumScaleFactor = 0.5 
         return l
     }()
     
@@ -60,6 +61,16 @@ class BoardCell: UIView {
         pieceLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
         pieceLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: 0).isActive = true
         pieceLabel.heightAnchor.constraint(equalTo: heightAnchor, constant: 0).isActive = true
+    }
+    
+    func configureCell(forPiece piece: ChessPiece) {
+        row = piece.row
+        column = piece.col
+        self.piece = piece
+        
+        pieceLabel.text = piece.symbol
+        pieceLabel.textColor = piece.color
+        backgroundColor = color 
     }
     
     func setAsPossibleLocation() {

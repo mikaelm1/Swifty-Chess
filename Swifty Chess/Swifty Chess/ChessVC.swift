@@ -33,6 +33,8 @@ class ChessVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        chessBoard.delegate = self
+        
         drawBoard()
         setupViews()
     }
@@ -88,7 +90,7 @@ class ChessVC: UIViewController {
 extension ChessVC: BoardCellDelegate {
     
     func didSelect(cell: BoardCell, atRow row: Int, andColumn col: Int) {
-        print("Selected cell at: \(row), \(col)")
+        //print("Selected cell at: \(row), \(col)")
         
         // Check if making a move (if had selected piece before)
         if let movingPiece = pieceBeingMoved, movingPiece.color == playerTurn {
@@ -99,8 +101,11 @@ extension ChessVC: BoardCellDelegate {
             for move in possibleMoves {
                 if move.row == row && move.column == col {
                     
+                    print(chessBoard.board[cell.row][cell.column].symbol)
                     chessBoard.move(chessPiece: movingPiece, fromIndex: source, toIndex: dest)
-                    drawBoard()
+                    print(chessBoard.board[cell.row][cell.column].symbol)
+                    //drawBoard()
+                    
                     pieceBeingMoved = nil
                     playerTurn = playerTurn == .white ? .black : .white
                     if chessBoard.isPlayerUnderCheck(playerColor: playerTurn) {
@@ -109,6 +114,7 @@ extension ChessVC: BoardCellDelegate {
                         checkLabel.text = ""
                     }
                     updateLabel()
+                    print("The old cell now holds: \(cell.piece.symbol)")
                     return
                 }
             }
@@ -140,6 +146,8 @@ extension ChessVC: BoardCellDelegate {
         }
         
         updateLabel()
+        //print("The old cell now holds: \(cell.piece.symbol)")
+        //print(chessBoard.board[cell.row][cell.column])
     }
     
     func highligtPossibleMoves() {
@@ -154,6 +162,22 @@ extension ChessVC: BoardCellDelegate {
             //print(move.row)
             boardCells[move.row][move.column].removeHighlighting()
         }
+    }
+    
+}
+
+extension ChessVC: ChessBoardDelegate {
+    
+    func boardUpdated() {
+        //print("Board updated")
+        for row in 0...7 {
+            for col in 0...7 {
+                let cell = boardCells[row][col]
+                let piece = chessBoard.board[row][col]
+                cell.configureCell(forPiece: piece)
+            }
+        }
+        
     }
     
 }
