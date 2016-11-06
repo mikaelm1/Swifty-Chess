@@ -11,6 +11,7 @@ import UIKit
 protocol ChessBoardDelegate {
     func boardUpdated()
     func gameOver(withWinner winner: UIColor)
+    func gameTied()
 }
 
 class ChessBoard {
@@ -182,6 +183,8 @@ class ChessBoard {
         // check if by making this move, the player has won the game
         if isWinner(player: chessPiece.color, byMove: dest) {
             delegate?.gameOver(withWinner: chessPiece.color)
+        } else if isGameTie(withCurrentPlayer: chessPiece.color) {
+            delegate?.gameTied()
         }
         
         delegate?.boardUpdated()
@@ -505,12 +508,60 @@ class ChessBoard {
         return false
     }
     
-    func isGameTie(withCurrentPlayer player: UIColor) -> Bool {
+    /// Called after the passed in player made a move
+    private func isGameTie(withCurrentPlayer player: UIColor) -> Bool {
         // TODO: Add a more exhuastive list of draw possibilities
-        // draw if currentPlayer not in check and has no possible moves
+        // draw if currentPlayer or opponent not in check and has no possible moves
+        let playerPieces = getAllPieces(forPlayer: player)
+        for piece in playerPieces {
+            if getPossibleMoves(forPiece: piece).count == 0 {
+                return true
+            }
+        }
+        let opponent: UIColor = player == .white ? .black : .white
+        let opponentPieces = getAllPieces(forPlayer: opponent)
+        for piece in opponentPieces {
+            if getPossibleMoves(forPiece: piece).count == 0 {
+                return true 
+            }
+        }
         
         // or if only kings remain
+        if onlyKingsLeft() {
+            return true
+        }
+        
         return false
+    }
+    
+    /// A helper function called from isGameTie(_:)
+    private func getAllPieces(forPlayer player: UIColor) -> [ChessPiece] {
+        var playerPieces = [ChessPiece]()
+        for row in 0...7 {
+            for col in 0...7 {
+                if board[row][col].color == player {
+                    playerPieces.append(board[row][col])
+                }
+            }
+        }
+        
+        return playerPieces
+    }
+    
+    /// A helper function called from isGameTie(_:)
+    private func onlyKingsLeft() -> Bool {
+        var count = 0
+        for row in 0...7 {
+            for col in 0...7 {
+                if !(board[row][col] is DummyPiece) {
+                    count += 1
+                }
+                if count > 2 {
+                    return false
+                }
+            }
+        }
+        return true
     }
     
 }

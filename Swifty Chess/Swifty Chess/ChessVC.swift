@@ -188,6 +188,10 @@ extension ChessVC: ChessBoardDelegate {
         }
     }
     
+    func gameTied() {
+        print("Game tied")
+    }
+    
     func showGameOverMessage(forWinner winner: String) {
         let ac = UIAlertController(title: "Game Over", message: "\(winner) player won the game. Play again?", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ok", style: .default, handler: { action in

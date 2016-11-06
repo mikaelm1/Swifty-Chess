@@ -6,6 +6,7 @@
 //  Copyright © 2016 MSquaredmm. All rights reserved.
 //
 
+// LEGACY: NOT ACTIVE 
 import UIKit
 
 class ChessCell: UICollectionViewCell {

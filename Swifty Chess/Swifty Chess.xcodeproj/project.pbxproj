@@ -12,6 +12,7 @@
 		7076DB671DC43B2800F01924 /* ChessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7076DB661DC43B2800F01924 /* ChessViewController.swift */; };
 		7076DB6C1DC43B2800F01924 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7076DB6B1DC43B2800F01924 /* Assets.xcassets */; };
 		7076DB6F1DC43B2800F01924 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7076DB6D1DC43B2800F01924 /* LaunchScreen.storyboard */; };
+		7092D17E1DCFEB1A0056A999 /* Swifty_ChessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092D17D1DCFEB1A0056A999 /* Swifty_ChessTests.swift */; };
 		70C84AB61DC44619000F2BD9 /* ChessBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AB51DC44619000F2BD9 /* ChessBoard.swift */; };
 		70C84AB81DC44643000F2BD9 /* ChessPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AB71DC44643000F2BD9 /* ChessPiece.swift */; };
 		70C84ABA1DC446C2000F2BD9 /* Pawn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AB91DC446C2000F2BD9 /* Pawn.swift */; };
@@ -26,6 +27,16 @@
 		70C84ACD1DC8524C000F2BD9 /* ChessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84ACC1DC8524C000F2BD9 /* ChessVC.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7092D1801DCFEB1A0056A999 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7076DB591DC43B2800F01924 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7076DB601DC43B2800F01924;
+			remoteInfo = "Swifty Chess";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		70725B4E1DC9784F00C1A506 /* BoardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardCell.swift; sourceTree = "<group>"; };
 		7076DB611DC43B2800F01924 /* Swifty Chess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swifty Chess.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -34,6 +45,9 @@
 		7076DB6B1DC43B2800F01924 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7076DB6E1DC43B2800F01924 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7076DB701DC43B2800F01924 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7092D17B1DCFEB1A0056A999 /* Swifty ChessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swifty ChessTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7092D17D1DCFEB1A0056A999 /* Swifty_ChessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swifty_ChessTests.swift; sourceTree = "<group>"; };
+		7092D17F1DCFEB1A0056A999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		70C84AB51DC44619000F2BD9 /* ChessBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChessBoard.swift; sourceTree = "<group>"; };
 		70C84AB71DC44643000F2BD9 /* ChessPiece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChessPiece.swift; sourceTree = "<group>"; };
 		70C84AB91DC446C2000F2BD9 /* Pawn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pawn.swift; sourceTree = "<group>"; };
@@ -56,6 +70,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7092D1781DCFEB1A0056A999 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -63,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				7076DB631DC43B2800F01924 /* Swifty Chess */,
+				7092D17C1DCFEB1A0056A999 /* Swifty ChessTests */,
 				7076DB621DC43B2800F01924 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -71,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				7076DB611DC43B2800F01924 /* Swifty Chess.app */,
+				7092D17B1DCFEB1A0056A999 /* Swifty ChessTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,6 +110,15 @@
 				7076DB701DC43B2800F01924 /* Info.plist */,
 			);
 			path = "Swifty Chess";
+			sourceTree = "<group>";
+		};
+		7092D17C1DCFEB1A0056A999 /* Swifty ChessTests */ = {
+			isa = PBXGroup;
+			children = (
+				7092D17D1DCFEB1A0056A999 /* Swifty_ChessTests.swift */,
+				7092D17F1DCFEB1A0056A999 /* Info.plist */,
+			);
+			path = "Swifty ChessTests";
 			sourceTree = "<group>";
 		};
 		70C84AB21DC445F8000F2BD9 /* Model */ = {
@@ -152,6 +184,24 @@
 			productReference = 7076DB611DC43B2800F01924 /* Swifty Chess.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7092D17A1DCFEB1A0056A999 /* Swifty ChessTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7092D1841DCFEB1A0056A999 /* Build configuration list for PBXNativeTarget "Swifty ChessTests" */;
+			buildPhases = (
+				7092D1771DCFEB1A0056A999 /* Sources */,
+				7092D1781DCFEB1A0056A999 /* Frameworks */,
+				7092D1791DCFEB1A0056A999 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7092D1811DCFEB1A0056A999 /* PBXTargetDependency */,
+			);
+			name = "Swifty ChessTests";
+			productName = "Swifty ChessTests";
+			productReference = 7092D17B1DCFEB1A0056A999 /* Swifty ChessTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -166,6 +216,12 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = DU7XEDNZGC;
 						ProvisioningStyle = Automatic;
+					};
+					7092D17A1DCFEB1A0056A999 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = DU7XEDNZGC;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 7076DB601DC43B2800F01924;
 					};
 				};
 			};
@@ -183,6 +239,7 @@
 			projectRoot = "";
 			targets = (
 				7076DB601DC43B2800F01924 /* Swifty Chess */,
+				7092D17A1DCFEB1A0056A999 /* Swifty ChessTests */,
 			);
 		};
 /* End PBXProject section */
@@ -194,6 +251,13 @@
 			files = (
 				7076DB6F1DC43B2800F01924 /* LaunchScreen.storyboard in Resources */,
 				7076DB6C1DC43B2800F01924 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7092D1791DCFEB1A0056A999 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,7 +286,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7092D1771DCFEB1A0056A999 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7092D17E1DCFEB1A0056A999 /* Swifty_ChessTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7092D1811DCFEB1A0056A999 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7076DB601DC43B2800F01924 /* Swifty Chess */;
+			targetProxy = 7092D1801DCFEB1A0056A999 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7076DB6D1DC43B2800F01924 /* LaunchScreen.storyboard */ = {
@@ -353,6 +433,34 @@
 			};
 			name = Release;
 		};
+		7092D1821DCFEB1A0056A999 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = DU7XEDNZGC;
+				INFOPLIST_FILE = "Swifty ChessTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.msquaredmm.Swifty-ChessTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swifty Chess.app/Swifty Chess";
+			};
+			name = Debug;
+		};
+		7092D1831DCFEB1A0056A999 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = DU7XEDNZGC;
+				INFOPLIST_FILE = "Swifty ChessTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.msquaredmm.Swifty-ChessTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swifty Chess.app/Swifty Chess";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -373,6 +481,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		7092D1841DCFEB1A0056A999 /* Build configuration list for PBXNativeTarget "Swifty ChessTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7092D1821DCFEB1A0056A999 /* Debug */,
+				7092D1831DCFEB1A0056A999 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
