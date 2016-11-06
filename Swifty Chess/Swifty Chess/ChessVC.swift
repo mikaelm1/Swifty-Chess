@@ -14,7 +14,7 @@ class ChessVC: UIViewController {
     var boardCells = [[BoardCell]]()
     var pieceBeingMoved: ChessPiece? = nil
     var possibleMoves = [BoardIndex]()
-    var playerTurn = UIColor.white
+    var playerTurn = UIColor.black
     
     let turnLabel: UILabel = {
         let l = UILabel()
@@ -37,11 +37,6 @@ class ChessVC: UIViewController {
         
         drawBoard()
         setupViews()
-    }
-    
-    func startGame() {
-        //chessBoard = ChessBoard()
-        //drawBoard()
     }
     
     func drawBoard() {
@@ -201,7 +196,7 @@ extension ChessVC: ChessBoardDelegate {
         let noAction = UIAlertAction(title: "No", style: .default, handler: { action in
             
             print("Too bad. That's all we can do right now. Haven't added another scene yet")
-            self.chessBoard.startNewGame()
+            //self.chessBoard.startNewGame()
         })
         
         ac.addAction(okAction)
