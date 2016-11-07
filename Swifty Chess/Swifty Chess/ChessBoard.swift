@@ -511,7 +511,12 @@ class ChessBoard {
     /// Called after the passed in player made a move
     private func isGameTie(withCurrentPlayer player: UIColor) -> Bool {
         // TODO: Add a more exhuastive list of draw possibilities
-        // draw if currentPlayer or opponent not in check and has no possible moves
+        
+        // if only kings remain game is tied
+        if onlyKingsLeft() {
+            return true
+        }
+        // or draw if currentPlayer or opponent not in check and has no possible moves
         let playerPieces = getAllPieces(forPlayer: player)
         for piece in playerPieces {
             if getPossibleMoves(forPiece: piece).count == 0 {
@@ -526,10 +531,7 @@ class ChessBoard {
             }
         }
         
-        // or if only kings remain
-        if onlyKingsLeft() {
-            return true
-        }
+        
         
         return false
     }
