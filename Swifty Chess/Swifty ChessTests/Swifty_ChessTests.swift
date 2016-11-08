@@ -91,6 +91,23 @@ class Swifty_ChessTests: XCTestCase {
         XCTAssertTrue(mockVC.tied, "Game did not tie when no more moves left and no check")
     }
     
+    func testCastling() {
+        let blackKing = chessBoard.board[7][4]
+        chessBoard.board[7][5] = DummyPiece(row: 7, column: 5)
+        chessBoard.board[7][6] = DummyPiece(row: 7, column: 6)
+        var moves = chessBoard.getPossibleMoves(forPiece: blackKing)
+        for move in moves {
+            if move.row == 7 && move.column == 2 {
+                XCTFail("King has possible move in wrong place")
+            }
+        }
+        let twoCellsOver = BoardIndex(row: 7, column: 6)
+        XCTAssertTrue(moves.contains(twoCellsOver), "Two cells over not present")
+        (blackKing as! King).firstMove = false
+        moves = chessBoard.getPossibleMoves(forPiece: blackKing)
+        XCTAssertFalse(moves.contains(twoCellsOver), "Two cells over shoud not be available")
+    }
+    
     func testGameOver() {
         
         class ChessVCMock: ChessVC {
