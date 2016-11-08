@@ -1,5 +1,5 @@
 language: objective-c  
 osx_image: xcode8 
-xcode_project: Swifty_Chess.xcodeproj 
-xcode_scheme: Swifty_Chess 
+xcode_project: Swifty-Chess.xcodeproj 
+xcode_scheme: Swifty-Chess 
 xcode_sdk: iphonesimulator10 
