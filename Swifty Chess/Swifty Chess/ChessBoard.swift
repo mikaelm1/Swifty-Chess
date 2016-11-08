@@ -92,11 +92,13 @@ class ChessBoard {
     }
     
     /// All move validations start here
-    func isMoveLegal(forPiece piece: ChessPiece, toIndex dest: BoardIndex) -> Bool {
+    func isMoveLegal(forPiece piece: ChessPiece, toIndex dest: BoardIndex, considerOwnPiece consider: Bool) -> Bool {
         
-        // TODO: Possibly a bug. Maybe should be checked before getting here
-        if isAttackingOwnPiece(attackingPiece: piece, atIndex: dest) {
-            return false 
+        // Fix a bug. When checking if king can take opponent piece while under check by that piece
+        if consider {
+            if isAttackingOwnPiece(attackingPiece: piece, atIndex: dest) {
+                return false
+            }
         }
         
         if piece.col == dest.column && piece.row == dest.row {
@@ -134,7 +136,7 @@ class ChessBoard {
         for row in 0...7 {
             for col in 0...7 {
                 let dest = BoardIndex(row: row, column: col)
-                if isMoveLegal(forPiece: piece, toIndex: dest) {
+                if isMoveLegal(forPiece: piece, toIndex: dest, considerOwnPiece: true) {
                     possibleMoves.append(dest)
                 }
             }
@@ -146,7 +148,7 @@ class ChessBoard {
         if piece is King {
             print("Checking \(possibleMoves.count) moves for king")
             for move in possibleMoves {
-                if !canOpponentAttack(playerKing: piece as! King, ifMovedTo: move) && doesMoveExposeKingToCheck(playerPiece: piece, toIndex: move) {
+                if !canOpponentAttack(playerKing: piece as! King, ifMovedTo: move) {
                     print("Appending move for king")
                     realPossibleMoves.append(move)
                 }
@@ -291,19 +293,24 @@ class ChessBoard {
     func canOpponentAttack(playerKing king: King, ifMovedTo dest: BoardIndex) -> Bool {
         print("inside canOpponentAttack(playerKing:)")
         let opponent: UIColor = king.color == .white ? .black : .white
-        if king.color == .white {
+        if opponent == .black && king.color == .white {
             print("Checking if black opponent can attack white king")
-        } else {
+        } else if opponent == .white && king.color == .black {
             print("Checking if white opponent can attack black king")
         }
         for row in 0...7 {
             for col in 0...7 {
                 let piece = board[row][col]
                 if piece.color == opponent {
-                    //print(piece.printInfo())
-                    if isMoveLegal(forPiece: piece, toIndex: dest) {
+                    if piece is Bishop && piece.color == .black {
+                        print("Checking black bishop!!!!!!!")
+                    }
+                    //print("Can \(piece.printInfo()) attack king????????")
+                    if isMoveLegal(forPiece: piece, toIndex: dest, considerOwnPiece: false) {
+                        print("Can \(piece.printInfo()) attack king is true")
                         return true
                     }
+                    
                     
                 }
             }
@@ -376,7 +383,7 @@ class ChessBoard {
         for row in 0...7 {
             for col in 0...7 {
                 if board[row][col].color == color {
-                    if isMoveLegal(forPiece: board[row][col], toIndex: kingIndex) {
+                    if isMoveLegal(forPiece: board[row][col], toIndex: kingIndex, considerOwnPiece: true) {
                         return true
                     }
                 }
@@ -408,7 +415,7 @@ class ChessBoard {
                 //print("Piece being attacked: \(pieceBeingAttacked.printInfo()) by \(piece.printInfo())")
                 
                 if board[row][col].color == opponent {
-                    if isMoveLegal(forPiece: board[row][col], toIndex: kingIndex) {
+                    if isMoveLegal(forPiece: board[row][col], toIndex: kingIndex, considerOwnPiece: true) {
                         //print("\(board[row][col].symbol) can attack your king!")
                         // undo fake move
                         board[dest.row][dest.column] = pieceBeingAttacked
