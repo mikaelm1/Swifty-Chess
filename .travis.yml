@@ -6,4 +6,5 @@ xcode_sdk: iphonesimulator10.0
 
 script:
 - cd Swifty\ Chess/
-- xcodebuild clean build test -project Swifty\ Chess.xcodeproj -scheme Swifty\ Chess 
+- xcodebuild -project Swifty\ Chess.xcodeproj -target Swifty\ Chess -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+- xcodebuild -project Swifty\ Chess.xcodeproj -scheme Swifty\ Chess -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' test 
