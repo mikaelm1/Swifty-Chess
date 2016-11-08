@@ -5,4 +5,5 @@ xcode_scheme: Swifty Chess/Swifty Chess
 xcode_sdk: iphonesimulator10.0 
 
 script:
+- cd Swifty\ Chess/
 - xcodebuild clean build test -project Swifty\ Chess.xcodeproj -scheme Swifty\ Chess 
