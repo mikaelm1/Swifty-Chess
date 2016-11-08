@@ -1,8 +1,8 @@
 language: objective-c  
 osx_image: xcode8 
 xcode_project: Swifty Chess/Swifty Chess.xcodeproj 
-xcode_scheme: Swifty Chess 
+xcode_scheme: Swifty Chess/Swifty_ChessTests 
 xcode_sdk: iphonesimulator10.0 
 
-script:
-- xcodebuild clean build test -project Swifty\ /Chess.xcodeproj -scheme Swifty_ChessTests 
+# script:
+# - xcodebuild clean build test -project Swifty\ Chess.xcodeproj -scheme Swifty_ChessTests 
