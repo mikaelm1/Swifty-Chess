@@ -144,9 +144,10 @@ class ChessBoard {
         var realPossibleMoves = [BoardIndex]()
         
         if piece is King {
-            print("Checking \(possibleMoves.count) moves")
+            print("Checking \(possibleMoves.count) moves for king")
             for move in possibleMoves {
-                if !canOpponentAttack(playerKing: piece as! King, ifMovedTo: move) {
+                if !canOpponentAttack(playerKing: piece as! King, ifMovedTo: move) && doesMoveExposeKingToCheck(playerPiece: piece, toIndex: move) {
+                    print("Appending move for king")
                     realPossibleMoves.append(move)
                 }
 //                if !doesMoveExposeKingToCheck(playerPiece: piece, toIndex: move) {
@@ -169,6 +170,7 @@ class ChessBoard {
         return realPossibleMoves
     }
     
+    /// Makes the given move and checks for game over/tie and reports back through delegates
     func move(chessPiece: ChessPiece, fromIndex source: BoardIndex, toIndex dest: BoardIndex) {
         
         // add piece to new location
@@ -287,15 +289,22 @@ class ChessBoard {
     }
     
     func canOpponentAttack(playerKing king: King, ifMovedTo dest: BoardIndex) -> Bool {
-        
+        print("inside canOpponentAttack(playerKing:)")
         let opponent: UIColor = king.color == .white ? .black : .white
+        if king.color == .white {
+            print("Checking if black opponent can attack white king")
+        } else {
+            print("Checking if white opponent can attack black king")
+        }
         for row in 0...7 {
             for col in 0...7 {
                 let piece = board[row][col]
                 if piece.color == opponent {
+                    //print(piece.printInfo())
                     if isMoveLegal(forPiece: piece, toIndex: dest) {
                         return true
                     }
+                    
                 }
             }
         }
@@ -428,12 +437,13 @@ class ChessBoard {
     }
     
     func isWinner(player color: UIColor, byMove move: BoardIndex) -> Bool {
-        /// Player wins if opponent's king has no more moves and the
-        /// opponent can't block the check with another one of his pieces
+        // Player wins if opponent's king has no more moves and the
+        // opponent can't block the check with another one of his pieces
         let attackingPiece = board[move.row][move.column]
         let opponent: UIColor = color == UIColor.white ? .black : .white
         // check if the current player's move put opponent in check
         if isPlayerUnderCheck(playerColor: opponent) {
+            print("Opponent under check")
             // does opponent's king have any possible moves
             guard let opponentKing = getKing(forColor: opponent) else {
                 print("Something seriously wrong in isWinner. DEBUG!!")
@@ -514,26 +524,26 @@ class ChessBoard {
         
         // if only kings remain game is tied
         if onlyKingsLeft() {
+            print("Only 2 kings left")
             return true
         }
         // or draw if currentPlayer or opponent not in check and has no possible moves
-        let playerPieces = getAllPieces(forPlayer: player)
-        for piece in playerPieces {
-            if getPossibleMoves(forPiece: piece).count == 0 {
-                return true
-            }
-        }
+        //let playerPieces = getAllPieces(forPlayer: player)
+        var movesLeft = false
+//        for piece in playerPieces {
+//            if getPossibleMoves(forPiece: piece).count > 0 {
+//                movesLeft = true
+//            }
+//        }
         let opponent: UIColor = player == .white ? .black : .white
         let opponentPieces = getAllPieces(forPlayer: opponent)
         for piece in opponentPieces {
-            if getPossibleMoves(forPiece: piece).count == 0 {
-                return true 
+            if getPossibleMoves(forPiece: piece).count > 0 {
+                movesLeft = true
             }
         }
         
-        
-        
-        return false
+        return !movesLeft
     }
     
     /// A helper function called from isGameTie(_:)
