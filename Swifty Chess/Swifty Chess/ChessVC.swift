@@ -19,6 +19,7 @@ class ChessVC: UIViewController {
     let turnLabel: UILabel = {
         let l = UILabel()
         l.translatesAutoresizingMaskIntoConstraints = false
+        l.textColor = .white
         return l
     }()
     
@@ -29,47 +30,38 @@ class ChessVC: UIViewController {
         return l
     }()
     
+    lazy var restartButton: UIButton = {
+        let b = UIButton(type: .system)
+        b.translatesAutoresizingMaskIntoConstraints = false
+        b.setTitle("Restart Game", for: [])
+        b.setTitleColor(.white, for: [])
+        b.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        b.addTarget(self, action: #selector(restartPressed(sender:)), for: .touchUpInside)
+        return b
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(white: 0.1, alpha: 1)
+        UIApplication.shared.statusBarStyle = .lightContent
         
         chessBoard.delegate = self
         
         drawBoard()
         setupViews()
-        //runTest()
-    }
-    
-    func runTest() {
-        for row in 0...7 {
-            for col in 0...7 {
-                chessBoard.board[row][col] = DummyPiece(row: row, column: col)
-            }
-        }
-        drawBoard()
-        let blackKing = King(row: 0, column: 0, color: .black)
-        let blackBishop = Bishop(row: 0, column: 1, color: .black)
-        let whiteKing = King(row: 2, column: 1, color: .white)
-        let whiteRook = Rook(row: 7, column: 7, color: .white)
-        chessBoard.board[0][0] = blackKing
-        chessBoard.board[0][1] = blackBishop
-        chessBoard.board[2][1] = whiteKing
-        chessBoard.board[7][7] = whiteRook
-        //chessBoard.move(chessPiece: whiteRook, fromIndex: BoardIndex(row: 7, column: 7), toIndex: BoardIndex(row: 0, column: 7))
-        boardUpdated()
     }
     
     func drawBoard() {
         let oneRow = Array(repeating: BoardCell(row: 5, column: 5, piece: DummyPiece(row: 5, column: 5), color: .clear), count: 8)
         boardCells = Array(repeating: oneRow, count: 8)
-        let cellDimension = (view.frame.size.width - 8) / 8
-        var xOffset: CGFloat = 10
+        let cellDimension = (view.frame.size.width - 0) / 8
+        var xOffset: CGFloat = 0
         var yOffset: CGFloat = 100
         for row in 0...7 {
             yOffset = (CGFloat(row) * cellDimension) + 80
             xOffset = 50
             for col in 0...7 {
-                xOffset = (CGFloat(col) * cellDimension) + 4
+                xOffset = (CGFloat(col) * cellDimension) + 0
                 
                 let piece = chessBoard.board[row][col]
                 let cell = BoardCell(row: row, column: col, piece: piece, color: .white)
@@ -91,8 +83,15 @@ class ChessVC: UIViewController {
     }
     
     func setupViews() {
+        
+        view.addSubview(restartButton)
+        restartButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
+        restartButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        restartButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7).isActive = true
+        
+        
         view.addSubview(turnLabel)
-        turnLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        turnLabel.bottomAnchor.constraint(equalTo: restartButton.topAnchor, constant: -10).isActive = true
         turnLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
         
         view.addSubview(checkLabel)
@@ -103,6 +102,20 @@ class ChessVC: UIViewController {
     func updateLabel() {
         let color = playerTurn == .white ? "White" : "Black"
         turnLabel.text = "\(color) player's turn"
+    }
+    
+    // MARK: - Actions
+    
+    func restartPressed(sender: UIButton) {
+        let ac = UIAlertController(title: "Restart", message: "Are you sure you want to restart the game?", preferredStyle: .alert)
+        let yes = UIAlertAction(title: "Yes", style: .default, handler: { action in
+            self.chessBoard.startNewGame()
+        })
+        let no = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        ac.addAction(yes)
+        ac.addAction(no)
+        present(ac, animated: true, completion: nil)
     }
 
 }
