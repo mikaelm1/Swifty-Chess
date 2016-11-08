@@ -12,7 +12,7 @@ import XCTest
 class Swifty_ChessTests: XCTestCase {
     
     let chessBoard = ChessBoard()
-    let chessVC = ChessVC()
+    //let chessVC = ChessVC()
     
     override func setUp() {
         super.setUp()
@@ -65,6 +65,32 @@ class Swifty_ChessTests: XCTestCase {
         
     }
     
+    func testOpponentHasNoMovesLeft() {
+        class ChessVCMock: ChessVC {
+            var tied = false
+            
+            override func gameTied() {
+                tied = true
+            }
+        }
+        eraseBoard()
+        let mockVC = ChessVCMock()
+        mockVC.chessBoard = self.chessBoard
+        chessBoard.delegate = mockVC
+        mockVC.drawBoard()
+        let blackKing = King(row: 0, column: 0, color: .black)
+        let blackBishop = Bishop(row: 0, column: 1, color: .black)
+        let whiteKing = King(row: 2, column: 1, color: .white)
+        let whiteRook = Rook(row: 7, column: 7, color: .white)
+        chessBoard.board[0][0] = blackKing
+        chessBoard.board[0][1] = blackBishop
+        chessBoard.board[2][1] = whiteKing
+        chessBoard.board[7][7] = whiteRook
+        mockVC.playerTurn = .white
+        chessBoard.move(chessPiece: chessBoard.board[7][7], fromIndex: BoardIndex(row: 7, column: 7), toIndex: BoardIndex(row: 0, column: 7))
+        XCTAssertTrue(mockVC.tied, "Game did not tie when no more moves left and no check")
+    }
+    
     func testGameOver() {
         
         class ChessVCMock: ChessVC {
@@ -101,10 +127,11 @@ class Swifty_ChessTests: XCTestCase {
         XCTAssertTrue(mockVC.gameOverCalled, "Game over was not called")
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func eraseBoard() {
+        for row in 0...7 {
+            for col in 0...7 {
+                chessBoard.board[row][col] = DummyPiece(row: row, column: col)
+            }
         }
     }
     

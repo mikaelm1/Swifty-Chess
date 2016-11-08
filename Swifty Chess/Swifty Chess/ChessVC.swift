@@ -37,6 +37,26 @@ class ChessVC: UIViewController {
         
         drawBoard()
         setupViews()
+        //runTest()
+    }
+    
+    func runTest() {
+        for row in 0...7 {
+            for col in 0...7 {
+                chessBoard.board[row][col] = DummyPiece(row: row, column: col)
+            }
+        }
+        drawBoard()
+        let blackKing = King(row: 0, column: 0, color: .black)
+        let blackBishop = Bishop(row: 0, column: 1, color: .black)
+        let whiteKing = King(row: 2, column: 1, color: .white)
+        let whiteRook = Rook(row: 7, column: 7, color: .white)
+        chessBoard.board[0][0] = blackKing
+        chessBoard.board[0][1] = blackBishop
+        chessBoard.board[2][1] = whiteKing
+        chessBoard.board[7][7] = whiteRook
+        //chessBoard.move(chessPiece: whiteRook, fromIndex: BoardIndex(row: 7, column: 7), toIndex: BoardIndex(row: 0, column: 7))
+        boardUpdated()
     }
     
     func drawBoard() {
@@ -182,18 +202,19 @@ extension ChessVC: ChessBoardDelegate {
     
     func gameOver(withWinner winner: UIColor) {
         if winner == .white {
-            showGameOverMessage(forWinner: "White")
+            showGameOver(message: "White player won!")
         } else if winner == .black {
-            showGameOverMessage(forWinner: "Black")
+            showGameOver(message: "Black player won!")
         }
     }
     
     func gameTied() {
-        print("Game tied")
+        print("GAME TIED!!!")
+        showGameOver(message: "Game Tied!")
     }
     
-    func showGameOverMessage(forWinner winner: String) {
-        let ac = UIAlertController(title: "Game Over", message: "\(winner) player won the game. Play again?", preferredStyle: .alert)
+    func showGameOver(message: String) {
+        let ac = UIAlertController(title: "Game Over", message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ok", style: .default, handler: { action in
             self.chessBoard.startNewGame()
         })

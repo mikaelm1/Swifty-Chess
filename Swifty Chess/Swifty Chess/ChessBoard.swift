@@ -8,11 +8,6 @@
 
 import UIKit
 
-enum Direcion {
-    case right
-    case left
-}
-
 protocol ChessBoardDelegate {
     func boardUpdated()
     func gameOver(withWinner winner: UIColor)
