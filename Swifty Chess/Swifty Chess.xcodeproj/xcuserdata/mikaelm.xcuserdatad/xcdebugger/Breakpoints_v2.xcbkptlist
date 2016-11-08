@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Swifty Chess/ChessBoard.swift"
-            timestampString = "500270672.077161"
+            timestampString = "500273665.388132"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
+            startingLineNumber = "310"
+            endingLineNumber = "310"
             landmarkName = "isMoveValid(forKing:toIndex:)"
             landmarkType = "7">
          </BreakpointContent>

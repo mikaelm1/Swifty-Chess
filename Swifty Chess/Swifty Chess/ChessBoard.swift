@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum Direcion {
+    case right
+    case left
+}
+
 protocol ChessBoardDelegate {
     func boardUpdated()
     func gameOver(withWinner winner: UIColor)
@@ -149,12 +154,15 @@ class ChessBoard {
             print("Checking \(possibleMoves.count) moves for king")
             for move in possibleMoves {
                 if !canOpponentAttack(playerKing: piece as! King, ifMovedTo: move) {
-                    print("Appending move for king")
-                    realPossibleMoves.append(move)
+                    //print("Appending move for king")
+                    if (piece as! King).firstMove && isMoveTwoCellsOver(forKing: piece as! King, move: move) {
+                        if isRookNext(toKing: piece as! King, forMove: move) {
+                            realPossibleMoves.append(move)
+                        }
+                    } else {
+                        realPossibleMoves.append(move)
+                    }
                 }
-//                if !doesMoveExposeKingToCheck(playerPiece: piece, toIndex: move) {
-//                    //realPossibleMoves.append(move)
-//                }
             }
         } else {
             for move in possibleMoves {
@@ -175,14 +183,35 @@ class ChessBoard {
     /// Makes the given move and checks for game over/tie and reports back through delegates
     func move(chessPiece: ChessPiece, fromIndex source: BoardIndex, toIndex dest: BoardIndex) {
         
-        // add piece to new location
-        board[dest.row][dest.column] = chessPiece
-        // add a dummy piece at old location
-        board[source.row][source.column] = DummyPiece(row: source.row, column: source.column)
-        // update piece's location variables
-        chessPiece.row = dest.row
-        chessPiece.col = dest.column
-        //printBoard()
+        if chessPiece is King {
+            (chessPiece as! King).firstMove = false
+            if isMoveTwoCellsOver(forKing: chessPiece as! King, move: dest) {
+                //print("KING MOVED 2 Pieces OVER")
+                board[dest.row][dest.column] = chessPiece
+                chessPiece.row = dest.row
+                chessPiece.col = dest.column
+                board[source.row][source.column] = DummyPiece(row: source.row, column: source.column)
+                let rook = board[dest.row][dest.column+1]
+                board[dest.row][dest.column+1] = DummyPiece(row: dest.row, column: dest.column+1)
+                rook.row = dest.row
+                rook.col = dest.column - 1
+                board[dest.row][dest.column-1] = rook
+                
+            } else {
+                board[dest.row][dest.column] = chessPiece
+                board[source.row][source.column] = DummyPiece(row: source.row, column: source.column)
+                chessPiece.row = dest.row
+                chessPiece.col = dest.column
+            }
+        } else {
+            // add piece to new location
+            board[dest.row][dest.column] = chessPiece
+            // add a dummy piece at old location
+            board[source.row][source.column] = DummyPiece(row: source.row, column: source.column)
+            // update piece's location variables
+            chessPiece.row = dest.row
+            chessPiece.col = dest.column
+        }
         
         // check if by making this move, the player has won the game
         if isWinner(player: chessPiece.color, byMove: dest) {
@@ -288,6 +317,23 @@ class ChessBoard {
         }
         
         return true
+    }
+    
+    /// called from getPossibleMoves and when move made
+    private func isMoveTwoCellsOver(forKing king: King, move: BoardIndex) -> Bool {
+        let colDelta = abs(king.col - move.column)
+        return colDelta == 2
+    }
+    
+    /// called from getPossibleMoves only
+    private func isRookNext(toKing king: King, forMove move: BoardIndex) -> Bool {
+        if king.color == .white {
+            //if move.row == 0 && move.column == 6
+            return move.row == 0 && move.column == 6 && board[move.row][move.column + 1] is Rook
+        } else if king.color == .black {
+            return move.row == 7 && move.column == 6 && board[move.row][move.column + 1] is Rook
+        }
+        return false
     }
     
     func canOpponentAttack(playerKing king: King, ifMovedTo dest: BoardIndex) -> Bool {
