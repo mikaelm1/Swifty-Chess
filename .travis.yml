@@ -4,7 +4,12 @@ xcode_project: Swifty Chess/Swifty Chess.xcodeproj
 xcode_scheme: Swifty Chess/Swifty Chess
 xcode_sdk: iphonesimulator10.0 
 
+before install:
+  - brew update
+  - brew install xctool
+
 script:
 - cd Swifty\ Chess/
 - xcodebuild -project Swifty\ Chess.xcodeproj -target Swifty\ Chess -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
-- xcodebuild -project Swifty\ Chess.xcodeproj -scheme Swifty\ Chess -sdk iphonesimulator -destination 'platform=iOS Simulator,name=Generic iOS Simulator Device,OS=10.1' test 
+# - xcodebuild -project Swifty\ Chess.xcodeproj -scheme Swifty\ Chess -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' test 
+- xctool -project Swifty\ Chess.xcodeproj -scheme Swifty\ Chess test 
