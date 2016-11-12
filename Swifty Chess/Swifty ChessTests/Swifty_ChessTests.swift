@@ -143,6 +143,28 @@ class Swifty_ChessTests: XCTestCase {
         XCTAssertTrue(mockVC.gameOverCalled, "Game over was not called")
     }
     
+    func testPawnPromotion() {
+        
+        class ChessVCMock: ChessVC {
+            
+        }
+        let mockVC = ChessVCMock()
+        UIApplication.shared.keyWindow?.rootViewController = mockVC
+        mockVC.chessBoard = chessBoard
+        chessBoard.delegate = mockVC
+        eraseBoard()
+        chessBoard.board[0][0] = DummyPiece(row: 0, column: 0)
+        chessBoard.board[1][0] = DummyPiece(row: 1, column: 0)
+        mockVC.drawBoard()
+        mockVC.playerTurn = .black
+        let pawn = Pawn(row: 1, column: 0, color: .black)
+        chessBoard.board[1][0] = pawn
+        chessBoard.delegate?.boardUpdated()
+        chessBoard.move(chessPiece: pawn, fromIndex: BoardIndex(row: 1, column: 0), toIndex: BoardIndex(row: 0, column: 0))
+        XCTAssertTrue(mockVC.presentedViewController is UIAlertController, "Did not show the alert controller")
+        XCTAssertEqual(mockVC.presentedViewController?.title, "Promote Pawn", "Showing wrong alert controller")
+    }
+    
     func eraseBoard() {
         for row in 0...7 {
             for col in 0...7 {
