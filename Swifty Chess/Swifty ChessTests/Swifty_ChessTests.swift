@@ -12,7 +12,6 @@ import XCTest
 class Swifty_ChessTests: XCTestCase {
     
     let chessBoard = ChessBoard()
-    //let chessVC = ChessVC()
     
     override func setUp() {
         super.setUp()

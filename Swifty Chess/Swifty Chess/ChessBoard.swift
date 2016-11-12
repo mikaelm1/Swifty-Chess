@@ -12,12 +12,13 @@ protocol ChessBoardDelegate {
     func boardUpdated()
     func gameOver(withWinner winner: UIColor)
     func gameTied()
+    func promote(pawn: Pawn)
 }
 
 class ChessBoard {
     
     var board = [[ChessPiece]]()
-    var delegate: ChessVC?
+    var delegate: ChessBoardDelegate?
     
     init() {
         
@@ -206,6 +207,12 @@ class ChessBoard {
             // update piece's location variables
             chessPiece.row = dest.row
             chessPiece.col = dest.column
+        }
+        
+        if chessPiece is Pawn {
+            if doesPawnNeedPromotion(pawn: (chessPiece as! Pawn)) {
+                delegate?.promote(pawn: (chessPiece as! Pawn))
+            }
         }
         
         // check if by making this move, the player has won the game
@@ -575,14 +582,8 @@ class ChessBoard {
             print("Only 2 kings left")
             return true
         }
-        // or draw if currentPlayer or opponent not in check and has no possible moves
-        //let playerPieces = getAllPieces(forPlayer: player)
+        // or draw if opponent not in check and has no possible moves
         var movesLeft = false
-//        for piece in playerPieces {
-//            if getPossibleMoves(forPiece: piece).count > 0 {
-//                movesLeft = true
-//            }
-//        }
         let opponent: UIColor = player == .white ? .black : .white
         let opponentPieces = getAllPieces(forPlayer: opponent)
         for piece in opponentPieces {
@@ -622,6 +623,17 @@ class ChessBoard {
             }
         }
         return true
+    }
+    
+    /// Returns true if a pawn is at the end of the board
+    private func doesPawnNeedPromotion(pawn: Pawn) -> Bool {
+        return pawn.row == 0 || pawn.row == 7
+    }
+    
+    /// Promote the pawn to the passed in the piece type. Called from VC
+    func promote(pawn: Pawn, intoPiece piece: ChessPiece) {
+        board[pawn.row][pawn.col] = piece
+        delegate?.boardUpdated()
     }
     
 }

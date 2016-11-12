@@ -226,6 +226,12 @@ extension ChessVC: ChessBoardDelegate {
         showGameOver(message: "Game Tied!")
     }
     
+    func promote(pawn: Pawn) {
+        showPawnPromotionAlert(forPawn: pawn)
+    }
+    
+    // MARK: Alerts
+    
     func showGameOver(message: String) {
         let ac = UIAlertController(title: "Game Over", message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ok", style: .default, handler: { action in
@@ -239,6 +245,19 @@ extension ChessVC: ChessBoardDelegate {
         
         ac.addAction(okAction)
         ac.addAction(noAction)
+        present(ac, animated: true, completion: nil)
+    }
+    
+    func showPawnPromotionAlert(forPawn pawn: Pawn) {
+        let ac = UIAlertController(title: "Promote Pawn", message: "Please choose the piece you want to promote your pawn into", preferredStyle: .actionSheet)
+        let queen = UIAlertAction(title: "Queen", style: .default, handler: { _ in
+            self.chessBoard.promote(pawn: pawn, intoPiece: Queen(row: pawn.row, column: pawn.col, color: pawn.color))
+        })
+        let rook = UIAlertAction(title: "Rook", style: .default, handler: { _ in
+            self.chessBoard.promote(pawn: pawn, intoPiece: Rook(row: pawn.row, column: pawn.col, color: pawn.color))
+        })
+        ac.addAction(queen)
+        ac.addAction(rook)
         present(ac, animated: true, completion: nil)
     }
     
