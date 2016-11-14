@@ -14,7 +14,7 @@ class Bishop: ChessPiece {
         
         super.init(row: row, column: column)
         self.color = color
-        symbol = "♝"
+        symbol = "💩"
         
     }
     
