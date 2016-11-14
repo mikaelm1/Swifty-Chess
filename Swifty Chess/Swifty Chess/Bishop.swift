@@ -14,14 +14,9 @@ class Bishop: ChessPiece {
         
         super.init(row: row, column: column)
         self.color = color
-        symbol = "♝"
+        symbol = "💩"
         
     }
-
-    while (true) {
-       print "Foobared"   
-    }
-    
     /** Checks to see if the direction the piece is moving is the way this piece type is allowed to move. Doesn't take into account the sate of the board */
     func isMovementAppropriate(toIndex dest: BoardIndex) -> Bool {
         
