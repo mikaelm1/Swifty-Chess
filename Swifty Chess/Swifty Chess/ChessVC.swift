@@ -52,7 +52,7 @@ class ChessVC: UIViewController {
     }
     
     func drawBoard() {
-        let oneRow = Array(repeating: BoardCell(row: 5, column: 5, piece: DummyPiece(row: 5, column: 5), color: .clear), count: 8)
+        let oneRow = Array(repeating: BoardCell(row: 5, column: 5, piece: ChessPiece(row: 5, column: 5, color: .clear, type: .dummy), color: .clear), count: 8)
         boardCells = Array(repeating: oneRow, count: 8)
         let cellDimension = (view.frame.size.width - 0) / 8
         var xOffset: CGFloat = 0
@@ -226,7 +226,7 @@ extension ChessVC: ChessBoardDelegate {
         showGameOver(message: "Game Tied!")
     }
     
-    func promote(pawn: Pawn) {
+    func promote(pawn: ChessPiece) {
         showPawnPromotionAlert(forPawn: pawn)
     }
     
@@ -248,13 +248,13 @@ extension ChessVC: ChessBoardDelegate {
         present(ac, animated: true, completion: nil)
     }
     
-    func showPawnPromotionAlert(forPawn pawn: Pawn) {
+    func showPawnPromotionAlert(forPawn pawn: ChessPiece) {
         let ac = UIAlertController(title: "Promote Pawn", message: "Please choose the piece you want to promote your pawn into", preferredStyle: .actionSheet)
         let queen = UIAlertAction(title: "Queen", style: .default, handler: { _ in
-            self.chessBoard.promote(pawn: pawn, intoPiece: Queen(row: pawn.row, column: pawn.col, color: pawn.color))
+            self.chessBoard.promote(pawn: pawn, intoPiece: ChessPiece(row: pawn.row, column: pawn.col, color: pawn.color, type: .queen))
         })
         let rook = UIAlertAction(title: "Rook", style: .default, handler: { _ in
-            self.chessBoard.promote(pawn: pawn, intoPiece: Rook(row: pawn.row, column: pawn.col, color: pawn.color))
+            self.chessBoard.promote(pawn: pawn, intoPiece: ChessPiece(row: pawn.row, column: pawn.col, color: pawn.color, type: .rook))
         })
         ac.addAction(queen)
         ac.addAction(rook)

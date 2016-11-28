@@ -12,7 +12,7 @@ protocol ChessBoardDelegate {
     func boardUpdated()
     func gameOver(withWinner winner: UIColor)
     func gameTied()
-    func promote(pawn: Pawn)
+    func promote(pawn: ChessPiece)
 }
 
 class ChessBoard {
@@ -22,7 +22,7 @@ class ChessBoard {
     
     init() {
         
-        let oneRow = Array(repeating: DummyPiece(row: 0, column: 0), count: 8)
+        let oneRow = Array(repeating: ChessPiece(row: 0, column: 0, color: .clear, type: .dummy), count: 8)
         board = Array(repeating: oneRow, count: 8)
         startNewGame()
     }
@@ -34,47 +34,47 @@ class ChessBoard {
                 case 0: // First row of chess board
                     switch col { // determine what piece to put in each column of first row
                     case 0:
-                        board[row][col] = Rook(row: row, column: col, color: .white)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .rook)
                     case 1:
-                        board[row][col] = Knight(row: row, column: col, color: .white)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .knight)
                     case 2:
-                        board[row][col] = Bishop(row: row, column: col, color: .white)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .bishop)
                     case 3:
-                        board[row][col] = Queen(row: row, column: col, color: .white)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .queen)
                     case 4:
-                        board[row][col] = King(row: row, column: col, color: .white)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .king)
                     case 5:
-                        board[row][col] = Bishop(row: row, column: col, color: .white)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .bishop)
                     case 6:
-                        board[row][col] = Knight(row: row, column: col, color: .white)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .knight)
                     default:
-                        board[row][col] = Rook(row: row, column: col, color: .white)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .rook)
                     }
                 case 1:
-                    board[row][col] = Pawn(row: row, column: col, color: .white)
+                    board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .pawn)
                 case 6:
-                    board[row][col] = Pawn(row: row, column: col, color: .black)
+                    board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .pawn)
                 case 7:
                     switch col { // determine what piece to put in each column of first row
                     case 0:
-                        board[row][col] = Rook(row: row, column: col, color: .black)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .rook)
                     case 1:
-                        board[row][col] = Knight(row: row, column: col, color: .black)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .knight)
                     case 2:
-                        board[row][col] = Bishop(row: row, column: col, color: .black)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .bishop)
                     case 3:
-                        board[row][col] = Queen(row: row, column: col, color: .black)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .queen)
                     case 4:
-                        board[row][col] = King(row: row, column: col, color: .black)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .king)
                     case 5:
-                        board[row][col] = Bishop(row: row, column: col, color: .black)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .bishop)
                     case 6:
-                        board[row][col] = Knight(row: row, column: col, color: .black)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .knight)
                     default:
-                        board[row][col] = Rook(row: row, column: col, color: .black)
+                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .rook)
                     }
                 default:
-                    board[row][col] = DummyPiece(row: row, column: col)
+                    board[row][col] = ChessPiece(row: row, column: col, color: .clear, type: .dummy)
                 }
             }
         }
@@ -84,7 +84,7 @@ class ChessBoard {
     func isAttackingOwnPiece(attackingPiece: ChessPiece, atIndex dest: BoardIndex) -> Bool {
         
         let destPiece = board[dest.row][dest.column]
-        guard  !(destPiece is DummyPiece) else {
+        guard  !(destPiece.type == .dummy) else {
             // attacking an empty cell
             return false
         }
@@ -92,44 +92,7 @@ class ChessBoard {
         return destPiece.color == attackingPiece.color
     }
     
-    /// All move validations start here
-    func isMoveLegal(forPiece piece: ChessPiece, toIndex dest: BoardIndex, considerOwnPiece consider: Bool) -> Bool {
-        
-        // Fix a bug. When checking if king can take opponent piece while under check by that piece
-        if consider {
-            if isAttackingOwnPiece(attackingPiece: piece, atIndex: dest) {
-                return false
-            }
-        }
-        
-        if piece.col == dest.column && piece.row == dest.row {
-            //print("Moving on itself")
-            return false
-        }
-        
-//        if !(piece is King) && doesMoveExposeKingToCheck(playerPiece: piece, toIndex: dest) {
-//            return false
-//        }
-        
-        switch piece {
-        case is Pawn:
-            return isMoveValid(forPawn: piece as! Pawn, toIndex: dest)
-        case is Rook, is Bishop, is Queen:
-            return isMoveValid(forRookOrBishopOrQueen: piece, toIndex: dest)
-        case is Knight:
-            // The knight doesn't care about the state of the board because
-            // it jumps over pieces. So there is no piece in the way for example
-            if !(piece as! Knight).isMovementAppropriate(toIndex: dest) {
-                return false
-            }
-        case is King:
-            return isMoveValid(forKing: piece as! King, toIndex: dest)
-        default:
-            break 
-        }
-        
-        return true
-    }
+
     
     func getPossibleMoves(forPiece piece: ChessPiece) -> [BoardIndex] {
         
@@ -142,17 +105,15 @@ class ChessBoard {
                 }
             }
         }
-        
         // make sure that by making this move, the player is not exposing his king
         var realPossibleMoves = [BoardIndex]()
-        
-        if piece is King {
+        if piece.type == .king {
             print("Checking \(possibleMoves.count) moves for king")
             for move in possibleMoves {
-                if !canOpponentAttack(playerKing: piece as! King, ifMovedTo: move) {
+                if !canOpponentAttack(playerKing: piece, ifMovedTo: move) {
                     //print("Appending move for king")
-                    if (piece as! King).firstMove && isMoveTwoCellsOver(forKing: piece as! King, move: move) {
-                        if isRookNext(toKing: piece as! King, forMove: move) {
+                    if piece.firstMove && isMoveTwoCellsOver(forKing: piece, move: move) {
+                        if isRookNext(toKing: piece, forMove: move) {
                             realPossibleMoves.append(move)
                         }
                     } else {
@@ -171,7 +132,6 @@ class ChessBoard {
                 //printBoard()
             }
         }
-        
         //print("\(realPossibleMoves.count) real moves")
         return realPossibleMoves
     }
@@ -179,23 +139,23 @@ class ChessBoard {
     /// Makes the given move and checks for game over/tie and reports back through delegates
     func move(chessPiece: ChessPiece, fromIndex source: BoardIndex, toIndex dest: BoardIndex) {
         
-        if chessPiece is King {
-            (chessPiece as! King).firstMove = false
-            if isMoveTwoCellsOver(forKing: chessPiece as! King, move: dest) {
+        if chessPiece.type == .king {
+            chessPiece.firstMove = false
+            if isMoveTwoCellsOver(forKing: chessPiece, move: dest) {
                 //print("KING MOVED 2 Pieces OVER")
                 board[dest.row][dest.column] = chessPiece
                 chessPiece.row = dest.row
                 chessPiece.col = dest.column
-                board[source.row][source.column] = DummyPiece(row: source.row, column: source.column)
+                board[source.row][source.column] = ChessPiece(row: source.row, column: source.column, color: .clear, type: .dummy)
                 let rook = board[dest.row][dest.column+1]
-                board[dest.row][dest.column+1] = DummyPiece(row: dest.row, column: dest.column+1)
+                board[dest.row][dest.column+1] = ChessPiece(row: dest.row, column: dest.column+1, color: .clear, type: .dummy)
                 rook.row = dest.row
                 rook.col = dest.column - 1
                 board[dest.row][dest.column-1] = rook
                 
             } else {
                 board[dest.row][dest.column] = chessPiece
-                board[source.row][source.column] = DummyPiece(row: source.row, column: source.column)
+                board[source.row][source.column] = ChessPiece(row: source.row, column: source.column, color: .clear, type: .dummy)
                 chessPiece.row = dest.row
                 chessPiece.col = dest.column
             }
@@ -203,15 +163,15 @@ class ChessBoard {
             // add piece to new location
             board[dest.row][dest.column] = chessPiece
             // add a dummy piece at old location
-            board[source.row][source.column] = DummyPiece(row: source.row, column: source.column)
+            board[source.row][source.column] = ChessPiece(row: source.row, column: source.column, color: .clear, type: .dummy)
             // update piece's location variables
             chessPiece.row = dest.row
             chessPiece.col = dest.column
         }
         
-        if chessPiece is Pawn {
-            if doesPawnNeedPromotion(pawn: (chessPiece as! Pawn)) {
-                delegate?.promote(pawn: (chessPiece as! Pawn))
+        if chessPiece.type == .pawn {
+            if doesPawnNeedPromotion(pawn: (chessPiece)) {
+                delegate?.promote(pawn: (chessPiece))
             }
         }
         
@@ -227,7 +187,46 @@ class ChessBoard {
     
     // MARK: - Move validations per piece type 
     
-    func isMoveValid(forPawn pawn: Pawn, toIndex dest: BoardIndex) -> Bool {
+    /// All move validations start here
+    func isMoveLegal(forPiece piece: ChessPiece, toIndex dest: BoardIndex, considerOwnPiece consider: Bool) -> Bool {
+        
+        // Fix a bug. When checking if king can take opponent piece while under check by that piece
+        if consider {
+            if isAttackingOwnPiece(attackingPiece: piece, atIndex: dest) {
+                return false
+            }
+        }
+        // Moving on itself
+        if piece.col == dest.column && piece.row == dest.row {
+            //print("Moving on itself")
+            return false
+        }
+        
+        //        if !(piece is King) && doesMoveExposeKingToCheck(playerPiece: piece, toIndex: dest) {
+        //            return false
+        //        }
+        
+        switch piece.type {
+        case .pawn:
+            return isMoveValid(forPawn: piece, toIndex: dest)
+        case .rook, .bishop, .queen:
+            return isMoveValid(forRookOrBishopOrQueen: piece, toIndex: dest)
+        case .knight:
+            // The knight doesn't care about the state of the board because
+            // it jumps over pieces. So there is no piece in the way for example
+            if piece.isMovementAppropriate(toIndex: dest) == false {
+                return false
+            }
+        case .king :
+            return isMoveValid(forKing: piece, toIndex: dest)
+        default:
+            break
+        }
+        
+        return true
+    }
+    
+    func isMoveValid(forPawn pawn: ChessPiece, toIndex dest: BoardIndex) -> Bool {
 
         if pawn.isMovementAppropriate(toIndex: dest) == false {
             return false
@@ -235,22 +234,22 @@ class ChessBoard {
         
         // if it's same column
         if pawn.col == dest.column {
-            if pawn.tryingToAdvanceBy2 {
+            if pawn.advancingByTwo {
                 let moveDirection = pawn.color == .black ? -1 : 1
                 
                 // make sure there are no pieces in the way or at destination
-                if board[dest.row][dest.column] is DummyPiece && board[dest.row - moveDirection][dest.column] is DummyPiece {
+                if board[dest.row][dest.column].type == .dummy && board[dest.row - moveDirection][dest.column].type == .dummy {
                     return true
                 }
             } else {
-                if board[dest.row][dest.column] is DummyPiece {
+                if board[dest.row][dest.column].type == .dummy {
                     return true
                 }
             }
         } else { // attempting to go diagonally
             // We will check that the destination cell does not contain a friend piece before getting to this cell
             // So just make sure the cell is not empty
-            if !(board[dest.row][dest.column] is DummyPiece) {
+            if !(board[dest.row][dest.column].type == .dummy) {
                 return true
             }
         }
@@ -260,21 +259,25 @@ class ChessBoard {
     
     func isMoveValid(forRookOrBishopOrQueen piece: ChessPiece, toIndex dest: BoardIndex) -> Bool {
         
-        switch piece {
-        case is Rook:
-            if !(piece as! Rook).isMovementAppropriate(toIndex: dest) {
-                return false
-            }
-        case is Bishop:
-            if !(piece as! Bishop).isMovementAppropriate(toIndex: dest) {
-                return false
-            }
-        case is Queen:
-            if !(piece as! Queen).isMovementAppropriate(toIndex: dest) {
-                return false
-            }
-        default:
-            // shouldn't be here
+//        switch piece.type {
+//        case .rook:
+//            if !(piece).isMovementAppropriate(toIndex: dest) {
+//                return false
+//            }
+//        case is Bishop:
+//            if !(piece as! Bishop).isMovementAppropriate(toIndex: dest) {
+//                return false
+//            }
+//        case is Queen:
+//            if !(piece as! Queen).isMovementAppropriate(toIndex: dest) {
+//                return false
+//            }
+//        default:
+//            // shouldn't be here
+//            return false
+//        }
+        
+        if piece.isMovementAppropriate(toIndex: dest) == false {
             return false
         }
         
@@ -298,7 +301,7 @@ class ChessBoard {
         var nextRow = piece.row + rowDelta
         var nextCol = piece.col + colDelta
         while nextRow != dest.row || nextCol != dest.column {
-            if !(board[nextRow][nextCol] is DummyPiece) {
+            if !(board[nextRow][nextCol].type == .dummy) {
                 return false
             }
             nextRow += rowDelta
@@ -308,9 +311,9 @@ class ChessBoard {
         return true
     }
     
-    func isMoveValid(forKing king: King, toIndex dest: BoardIndex) -> Bool {
+    func isMoveValid(forKing king: ChessPiece, toIndex dest: BoardIndex) -> Bool {
         
-        if !(king.isMovementAppropriate(toIndex: dest)) {
+        if king.isMovementAppropriate(toIndex: dest) == false {
             return false
         }
         
@@ -322,23 +325,23 @@ class ChessBoard {
     }
     
     /// called from getPossibleMoves and when move made
-    private func isMoveTwoCellsOver(forKing king: King, move: BoardIndex) -> Bool {
+    private func isMoveTwoCellsOver(forKing king: ChessPiece, move: BoardIndex) -> Bool {
         let colDelta = abs(king.col - move.column)
         return colDelta == 2
     }
     
     /// called from getPossibleMoves only
-    private func isRookNext(toKing king: King, forMove move: BoardIndex) -> Bool {
+    private func isRookNext(toKing king: ChessPiece, forMove move: BoardIndex) -> Bool {
         if king.color == .white {
             //if move.row == 0 && move.column == 6
-            return move.row == 0 && move.column == 6 && board[move.row][move.column + 1] is Rook
+            return move.row == 0 && move.column == 6 && board[move.row][move.column + 1].type == .rook
         } else if king.color == .black {
-            return move.row == 7 && move.column == 6 && board[move.row][move.column + 1] is Rook
+            return move.row == 7 && move.column == 6 && board[move.row][move.column + 1].type == .rook
         }
         return false
     }
     
-    func canOpponentAttack(playerKing king: King, ifMovedTo dest: BoardIndex) -> Bool {
+    func canOpponentAttack(playerKing king: ChessPiece, ifMovedTo dest: BoardIndex) -> Bool {
         print("inside canOpponentAttack(playerKing:)")
         let opponent: UIColor = king.color == .white ? .black : .white
         if opponent == .black && king.color == .white {
@@ -350,12 +353,12 @@ class ChessBoard {
             for col in 0...7 {
                 let piece = board[row][col]
                 if piece.color == opponent {
-                    if piece is Bishop && piece.color == .black {
+                    if piece.type == .bishop && piece.color == .black {
                         print("Checking black bishop!!!!!!!")
                     }
                     //print("Can \(piece.printInfo()) attack king????????")
                     if isMoveLegal(forPiece: piece, toIndex: dest, considerOwnPiece: false) {
-                        print("Can \(piece.printInfo()) attack king is true")
+                        //print("Can \(piece.printInfo()) attack king is true")
                         return true
                     }
                     
@@ -366,14 +369,14 @@ class ChessBoard {
         return false
     }
     
-    private func isAnotherKing(atIndex dest: BoardIndex, forKing king: King) -> Bool {
+    private func isAnotherKing(atIndex dest: BoardIndex, forKing king: ChessPiece) -> Bool {
         
         let opponentColor = king.color == UIColor.white ? UIColor.black : UIColor.white
         // Get other king's index
         var otherKingIndex: BoardIndex!
         for row in 0...7 {
             for col in 0...7 {
-                if let opponentKing = board[row][col] as? King, opponentKing.color == opponentColor {
+                if board[row][col].type == .king && board[row][col].color == opponentColor {
                     otherKingIndex = BoardIndex(row: row, column: col)
                     break
                 }
@@ -405,7 +408,7 @@ class ChessBoard {
         return isKingUnderUnderCheck(king: playerKing, byOpponent: opponentColor)
     }
     
-    private func getKing(forColor color: UIColor) -> King? {
+    private func getKing(forColor color: UIColor) -> ChessPiece? {
         if color == .white {
             //print("Looking for white king")
         } else if color == .black {
@@ -413,19 +416,19 @@ class ChessBoard {
         }
         for row in 0...7 {
             for col in 0...7 {
-                if let king = board[row][col] as? King, king.color == color {
-                    return king
+                if board[row][col].type == .king && board[row][col].color == color {
+                    return board[row][col]
                 }
             }
         }
         // should never get here
-        print("Did not find king")
+        print("Did not find king. SERIOUS ISSUE!!")
         return nil
     }
     
     /// returns true if player's king is under check, false otherwise. Called by
     /// another function: isPlayerUnderCheck
-    private func isKingUnderUnderCheck(king: King, byOpponent color: UIColor) -> Bool {
+    private func isKingUnderUnderCheck(king: ChessPiece, byOpponent color: UIColor) -> Bool {
         
         let kingIndex = BoardIndex(row: king.row, column: king.col)
         for row in 0...7 {
@@ -459,7 +462,7 @@ class ChessBoard {
                 // "place" piece at the destination it's actually trying to go
                 let pieceBeingAttacked = board[dest.row][dest.column]
                 board[dest.row][dest.column] = piece
-                board[piece.row][piece.col] = DummyPiece(row: piece.row, column: piece.col)
+                board[piece.row][piece.col] = ChessPiece(row: piece.row, column: piece.col, color: .clear, type: .dummy)
                 //print("Piece being attacked: \(pieceBeingAttacked.printInfo()) by \(piece.printInfo())")
                 
                 if board[row][col].color == opponent {
@@ -545,19 +548,19 @@ class ChessBoard {
         return move.row == piece.row && move.column == piece.col
     }
     
-    func canMove(fromIndex source: BoardIndex, toIndex dest: BoardIndex, blockCheckBy piece: ChessPiece, forKing king: King) -> Bool {
+    func canMove(fromIndex source: BoardIndex, toIndex dest: BoardIndex, blockCheckBy piece: ChessPiece, forKing king: ChessPiece) -> Bool {
         
         let opponent: UIColor = king.color == .white ? .black : .white
         let movingPiece = board[source.row][source.column]
         board[dest.row][dest.column] = movingPiece
-        board[source.row][source.column] = DummyPiece(row: 0, column: 0)
+        board[source.row][source.column] = ChessPiece(row: 0, column: 0, color: .clear, type: .dummy)
         movingPiece.col = dest.column
         movingPiece.row = dest.row
         
         if !isKingUnderUnderCheck(king: king, byOpponent: opponent) {
             // undo fake move
             board[source.row][source.column] = movingPiece
-            board[dest.row][dest.column] = DummyPiece(row: dest.row, column: dest.column)
+            board[dest.row][dest.column] = ChessPiece(row: dest.row, column: dest.column, color: .clear, type: .dummy)
             movingPiece.row = source.row
             movingPiece.col = source.column
             print("Can block check")
@@ -566,7 +569,7 @@ class ChessBoard {
         
         // undo fake move
         board[source.row][source.column] = movingPiece
-        board[dest.row][dest.column] = DummyPiece(row: dest.row, column: dest.column)
+        board[dest.row][dest.column] = ChessPiece(row: dest.row, column: dest.column, color: .clear, type: .dummy)
         movingPiece.row = source.row
         movingPiece.col = source.column
         
@@ -591,7 +594,6 @@ class ChessBoard {
                 movesLeft = true
             }
         }
-        
         return !movesLeft
     }
     
@@ -605,7 +607,6 @@ class ChessBoard {
                 }
             }
         }
-        
         return playerPieces
     }
     
@@ -614,7 +615,7 @@ class ChessBoard {
         var count = 0
         for row in 0...7 {
             for col in 0...7 {
-                if !(board[row][col] is DummyPiece) {
+                if board[row][col].type != .dummy {
                     count += 1
                 }
                 if count > 2 {
@@ -626,12 +627,12 @@ class ChessBoard {
     }
     
     /// Returns true if a pawn is at the end of the board
-    private func doesPawnNeedPromotion(pawn: Pawn) -> Bool {
-        return pawn.row == 0 || pawn.row == 7
+    private func doesPawnNeedPromotion(pawn: ChessPiece) -> Bool {
+        return pawn.type == .pawn && (pawn.row == 0 || pawn.row == 7)
     }
     
     /// Promote the pawn to the passed in the piece type. Called from VC
-    func promote(pawn: Pawn, intoPiece piece: ChessPiece) {
+    func promote(pawn: ChessPiece, intoPiece piece: ChessPiece) {
         board[pawn.row][pawn.col] = piece
         delegate?.boardUpdated()
     }
