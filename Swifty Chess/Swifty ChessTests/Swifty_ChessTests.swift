@@ -11,7 +11,7 @@ import XCTest
 
 class Swifty_ChessTests: XCTestCase {
     
-    let chessBoard = ChessBoard()
+    let chessBoard = ChessBoard(playerColor: .black)
     
     override func setUp() {
         super.setUp()
@@ -54,7 +54,7 @@ class Swifty_ChessTests: XCTestCase {
         for row in 0...7 {
             for col in 0...7 {
                 if chessBoard.board[row][col].type != .king && chessBoard.board[row][col].type != .dummy {
-                    chessBoard.board[row][col] = ChessPiece(row: row, column: col, color: .clear, type: .dummy)
+                    chessBoard.board[row][col] = ChessPiece(row: row, column: col, color: .clear, type: .dummy, player: .black)
                 }
             }
         }
@@ -77,10 +77,10 @@ class Swifty_ChessTests: XCTestCase {
         mockVC.chessBoard = self.chessBoard
         chessBoard.delegate = mockVC
         mockVC.drawBoard()
-        let blackKing = ChessPiece(row: 0, column: 0, color: .black, type: .king)
-        let blackBishop = ChessPiece(row: 0, column: 1, color: .black, type: .bishop)
-        let whiteKing = ChessPiece(row: 2, column: 1, color: .white, type: .king)
-        let whiteRook = ChessPiece(row: 7, column: 7, color: .white, type: .rook)
+        let blackKing = ChessPiece(row: 0, column: 0, color: .black, type: .king, player: .black)
+        let blackBishop = ChessPiece(row: 0, column: 1, color: .black, type: .bishop, player: .black)
+        let whiteKing = ChessPiece(row: 2, column: 1, color: .white, type: .king, player: .white)
+        let whiteRook = ChessPiece(row: 7, column: 7, color: .white, type: .rook, player: .white)
         chessBoard.board[0][0] = blackKing
         chessBoard.board[0][1] = blackBishop
         chessBoard.board[2][1] = whiteKing
@@ -92,8 +92,8 @@ class Swifty_ChessTests: XCTestCase {
     
     func testCastling() {
         let blackKing = chessBoard.board[7][4]
-        chessBoard.board[7][5] = ChessPiece(row: 7, column: 5, color: .clear, type: .dummy)
-        chessBoard.board[7][6] = ChessPiece(row: 7, column: 6, color: .clear, type: .dummy)
+        chessBoard.board[7][5] = ChessPiece(row: 7, column: 5, color: .clear, type: .dummy, player: .clear)
+        chessBoard.board[7][6] = ChessPiece(row: 7, column: 6, color: .clear, type: .dummy, player: .clear)
         var moves = chessBoard.getPossibleMoves(forPiece: blackKing)
         for move in moves {
             if move.row == 7 && move.column == 2 {
@@ -153,11 +153,11 @@ class Swifty_ChessTests: XCTestCase {
         mockVC.chessBoard = chessBoard
         chessBoard.delegate = mockVC
         eraseBoard()
-        chessBoard.board[0][0] = ChessPiece(row: 0, column: 0, color: .clear, type: .dummy)
-        chessBoard.board[1][0] = ChessPiece(row: 1, column: 0, color: .clear, type: .dummy)
+        chessBoard.board[0][0] = ChessPiece(row: 0, column: 0, color: .clear, type: .dummy, player: .clear)
+        chessBoard.board[1][0] = ChessPiece(row: 1, column: 0, color: .clear, type: .dummy, player: .clear)
         mockVC.drawBoard()
         mockVC.playerTurn = .black
-        let pawn = ChessPiece(row: 1, column: 0, color: .black, type: .pawn)
+        let pawn = ChessPiece(row: 1, column: 0, color: .black, type: .pawn, player: .white)
         chessBoard.board[1][0] = pawn
         chessBoard.delegate?.boardUpdated()
         chessBoard.move(chessPiece: pawn, fromIndex: BoardIndex(row: 1, column: 0), toIndex: BoardIndex(row: 0, column: 0))
@@ -168,7 +168,7 @@ class Swifty_ChessTests: XCTestCase {
     func eraseBoard() {
         for row in 0...7 {
             for col in 0...7 {
-                chessBoard.board[row][col] = ChessPiece(row: row, column: col, color: .clear, type: .dummy)
+                chessBoard.board[row][col] = ChessPiece(row: row, column: col, color: .clear, type: .dummy, player: .clear)
             }
         }
     }
