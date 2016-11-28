@@ -11,7 +11,7 @@ before install:
 script:
 - cd Swifty\ Chess/
 - xcodebuild -project Swifty\ Chess.xcodeproj -target Swifty\ Chess -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
-# - xcodebuild test -project Swifty\ Chess.xcodeproj -scheme Swifty\ Chess -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1'
+- xcodebuild test -project Swifty\ Chess.xcodeproj -scheme Swifty\ Chess -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1'
 # - xcodebuild -project Swifty\ Chess.xcodeproj -scheme Swifty\ Chess -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' test 
 # - xctool -project Swifty\ Chess.xcodeproj -scheme Swifty\ Chess test 
 # - xctool -scheme Swifty\ Chess -project Swifty\ Chess.xcodeproj/ run-tests -test-sdk iphonesimulator10.1
