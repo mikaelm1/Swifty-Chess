@@ -27,13 +27,16 @@ class ChessPiece {
     var type: PieceType
     var advancingByTwo = false // Only for pawn type
     var firstMove = true // Only for king type
+    //var pawnFirstMove = true // only for pawn type
+    var playerColor: UIColor
     
-    init(row: Int, column: Int, color: UIColor, type: PieceType) {
+    init(row: Int, column: Int, color: UIColor, type: PieceType, player: UIColor) {
         self.row = row
         self.col = column
         self.color = color
         self.type = type
         self.symbol = ""
+        self.playerColor = player 
         setupSymbol()
     }
     
@@ -81,14 +84,27 @@ class ChessPiece {
         // check if the move is in the same column
         if self.col == dest.column {
             // can only move 2 forward if first time moving pawn
-            if (self.row == 1 && dest.row == 3 && color == .white) || (self.row == 6 && dest.row == 4 && color == .black) {
-                advancingByTwo = true
-                return true
+            if color != playerColor {
+                if row == 1 && dest.row == 3 {
+                    advancingByTwo = true
+                    return true
+                }
+            } else {
+                if row == 6 && dest.row == 4 {
+                    advancingByTwo = true
+                    return true
+                }
             }
         }
         advancingByTwo = false
         // the move direction depends on the color of the piece
-        let moveDirection = color == .black ? -1 : 1
+        var moveDirection: Int
+        if color == playerColor {
+            moveDirection = -1
+        } else {
+            moveDirection = 1
+        }
+        //let moveDirection = color == .black ? -1 : 1
         // if the movement is only 1 row up/down
         if dest.row == self.row + moveDirection {
             // check for diagonal movement and forward movement

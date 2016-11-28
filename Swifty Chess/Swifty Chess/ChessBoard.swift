@@ -23,7 +23,7 @@ class ChessBoard {
     
     init(playerColor color: UIColor) {
         self.playerColor = color
-        let oneRow = Array(repeating: ChessPiece(row: 0, column: 0, color: .clear, type: .dummy), count: 8)
+        let oneRow = Array(repeating: ChessPiece(row: 0, column: 0, color: .clear, type: .dummy, player: color), count: 8)
         board = Array(repeating: oneRow, count: 8)
         startNewGame()
     }
@@ -36,47 +36,47 @@ class ChessBoard {
                 case 0: // First row of chess board
                     switch col { // determine what piece to put in each column of first row
                     case 0:
-                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .rook)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .rook, player: playerColor)
                     case 1:
-                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .knight)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .knight, player: playerColor)
                     case 2:
-                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .bishop)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .bishop, player: playerColor)
                     case 3:
-                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .queen)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .queen, player: playerColor)
                     case 4:
-                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .king)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .king, player: playerColor)
                     case 5:
-                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .bishop)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .bishop, player: playerColor)
                     case 6:
-                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .knight)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .knight, player: playerColor)
                     default:
-                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .rook)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .rook, player: playerColor)
                     }
                 case 1:
-                    board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .pawn)
+                    board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .pawn, player: playerColor)
                 case 6:
-                    board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .pawn)
+                    board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .pawn, player: playerColor)
                 case 7:
                     switch col { // determine what piece to put in each column of first row
                     case 0:
-                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .rook)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .rook, player: playerColor)
                     case 1:
-                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .knight)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .knight, player: playerColor)
                     case 2:
-                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .bishop)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .bishop, player: playerColor)
                     case 3:
-                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .queen)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .queen, player: playerColor)
                     case 4:
-                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .king)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .king, player: playerColor)
                     case 5:
-                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .bishop)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .bishop, player: playerColor)
                     case 6:
-                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .knight)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .knight, player: playerColor)
                     default:
-                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .rook)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .rook, player: playerColor)
                     }
                 default:
-                    board[row][col] = ChessPiece(row: row, column: col, color: .clear, type: .dummy)
+                    board[row][col] = ChessPiece(row: row, column: col, color: .clear, type: .dummy, player: playerColor)
                 }
             }
         }
@@ -93,8 +93,6 @@ class ChessBoard {
         
         return destPiece.color == attackingPiece.color
     }
-    
-
     
     func getPossibleMoves(forPiece piece: ChessPiece) -> [BoardIndex] {
         
@@ -148,16 +146,16 @@ class ChessBoard {
                 board[dest.row][dest.column] = chessPiece
                 chessPiece.row = dest.row
                 chessPiece.col = dest.column
-                board[source.row][source.column] = ChessPiece(row: source.row, column: source.column, color: .clear, type: .dummy)
+                board[source.row][source.column] = ChessPiece(row: source.row, column: source.column, color: .clear, type: .dummy, player: playerColor)
                 let rook = board[dest.row][dest.column+1]
-                board[dest.row][dest.column+1] = ChessPiece(row: dest.row, column: dest.column+1, color: .clear, type: .dummy)
+                board[dest.row][dest.column+1] = ChessPiece(row: dest.row, column: dest.column+1, color: .clear, type: .dummy, player: playerColor)
                 rook.row = dest.row
                 rook.col = dest.column - 1
                 board[dest.row][dest.column-1] = rook
                 
             } else {
                 board[dest.row][dest.column] = chessPiece
-                board[source.row][source.column] = ChessPiece(row: source.row, column: source.column, color: .clear, type: .dummy)
+                board[source.row][source.column] = ChessPiece(row: source.row, column: source.column, color: .clear, type: .dummy, player: playerColor)
                 chessPiece.row = dest.row
                 chessPiece.col = dest.column
             }
@@ -165,7 +163,7 @@ class ChessBoard {
             // add piece to new location
             board[dest.row][dest.column] = chessPiece
             // add a dummy piece at old location
-            board[source.row][source.column] = ChessPiece(row: source.row, column: source.column, color: .clear, type: .dummy)
+            board[source.row][source.column] = ChessPiece(row: source.row, column: source.column, color: .clear, type: .dummy, player: playerColor)
             // update piece's location variables
             chessPiece.row = dest.row
             chessPiece.col = dest.column
@@ -237,8 +235,12 @@ class ChessBoard {
         // if it's same column
         if pawn.col == dest.column {
             if pawn.advancingByTwo {
-                let moveDirection = pawn.color == .black ? -1 : 1
-                
+                var moveDirection: Int
+                if pawn.color == playerColor {
+                    moveDirection = -1
+                } else {
+                    moveDirection = 1
+                }
                 // make sure there are no pieces in the way or at destination
                 if board[dest.row][dest.column].type == .dummy && board[dest.row - moveDirection][dest.column].type == .dummy {
                     return true
@@ -260,24 +262,6 @@ class ChessBoard {
     }
     
     func isMoveValid(forRookOrBishopOrQueen piece: ChessPiece, toIndex dest: BoardIndex) -> Bool {
-        
-//        switch piece.type {
-//        case .rook:
-//            if !(piece).isMovementAppropriate(toIndex: dest) {
-//                return false
-//            }
-//        case is Bishop:
-//            if !(piece as! Bishop).isMovementAppropriate(toIndex: dest) {
-//                return false
-//            }
-//        case is Queen:
-//            if !(piece as! Queen).isMovementAppropriate(toIndex: dest) {
-//                return false
-//            }
-//        default:
-//            // shouldn't be here
-//            return false
-//        }
         
         if piece.isMovementAppropriate(toIndex: dest) == false {
             return false
@@ -464,7 +448,7 @@ class ChessBoard {
                 // "place" piece at the destination it's actually trying to go
                 let pieceBeingAttacked = board[dest.row][dest.column]
                 board[dest.row][dest.column] = piece
-                board[piece.row][piece.col] = ChessPiece(row: piece.row, column: piece.col, color: .clear, type: .dummy)
+                board[piece.row][piece.col] = ChessPiece(row: piece.row, column: piece.col, color: .clear, type: .dummy, player: playerColor)
                 //print("Piece being attacked: \(pieceBeingAttacked.printInfo()) by \(piece.printInfo())")
                 
                 if board[row][col].color == opponent {
@@ -503,7 +487,7 @@ class ChessBoard {
         let opponent: UIColor = color == UIColor.white ? .black : .white
         // check if the current player's move put opponent in check
         if isPlayerUnderCheck(playerColor: opponent) {
-            print("Opponent under check")
+            //print("Opponent under check")
             // does opponent's king have any possible moves
             guard let opponentKing = getKing(forColor: opponent) else {
                 print("Something seriously wrong in isWinner. DEBUG!!")
@@ -555,23 +539,23 @@ class ChessBoard {
         let opponent: UIColor = king.color == .white ? .black : .white
         let movingPiece = board[source.row][source.column]
         board[dest.row][dest.column] = movingPiece
-        board[source.row][source.column] = ChessPiece(row: 0, column: 0, color: .clear, type: .dummy)
+        board[source.row][source.column] = ChessPiece(row: 0, column: 0, color: .clear, type: .dummy, player: playerColor)
         movingPiece.col = dest.column
         movingPiece.row = dest.row
         
         if !isKingUnderUnderCheck(king: king, byOpponent: opponent) {
             // undo fake move
             board[source.row][source.column] = movingPiece
-            board[dest.row][dest.column] = ChessPiece(row: dest.row, column: dest.column, color: .clear, type: .dummy)
+            board[dest.row][dest.column] = ChessPiece(row: dest.row, column: dest.column, color: .clear, type: .dummy, player: playerColor)
             movingPiece.row = source.row
             movingPiece.col = source.column
-            print("Can block check")
+            //print("Can block check")
             return true
         }
         
         // undo fake move
         board[source.row][source.column] = movingPiece
-        board[dest.row][dest.column] = ChessPiece(row: dest.row, column: dest.column, color: .clear, type: .dummy)
+        board[dest.row][dest.column] = ChessPiece(row: dest.row, column: dest.column, color: .clear, type: .dummy, player: playerColor)
         movingPiece.row = source.row
         movingPiece.col = source.column
         

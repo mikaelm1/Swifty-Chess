@@ -10,7 +10,8 @@ import UIKit
 
 class ChessVC: UIViewController {
     
-    var chessBoard = ChessBoard(playerColor: .black)
+    var playerColor: UIColor = .white
+    var chessBoard = ChessBoard(playerColor: .white)
     var boardCells = [[BoardCell]]()
     var pieceBeingMoved: ChessPiece? = nil
     var possibleMoves = [BoardIndex]()
@@ -52,7 +53,7 @@ class ChessVC: UIViewController {
     }
     
     func drawBoard() {
-        let oneRow = Array(repeating: BoardCell(row: 5, column: 5, piece: ChessPiece(row: 5, column: 5, color: .clear, type: .dummy), color: .clear), count: 8)
+        let oneRow = Array(repeating: BoardCell(row: 5, column: 5, piece: ChessPiece(row: 5, column: 5, color: .clear, type: .dummy, player: playerColor), color: .clear), count: 8)
         boardCells = Array(repeating: oneRow, count: 8)
         let cellDimension = (view.frame.size.width - 0) / 8
         var xOffset: CGFloat = 0
@@ -251,10 +252,10 @@ extension ChessVC: ChessBoardDelegate {
     func showPawnPromotionAlert(forPawn pawn: ChessPiece) {
         let ac = UIAlertController(title: "Promote Pawn", message: "Please choose the piece you want to promote your pawn into", preferredStyle: .actionSheet)
         let queen = UIAlertAction(title: "Queen", style: .default, handler: { _ in
-            self.chessBoard.promote(pawn: pawn, intoPiece: ChessPiece(row: pawn.row, column: pawn.col, color: pawn.color, type: .queen))
+            self.chessBoard.promote(pawn: pawn, intoPiece: ChessPiece(row: pawn.row, column: pawn.col, color: pawn.color, type: .queen, player: self.playerColor))
         })
         let rook = UIAlertAction(title: "Rook", style: .default, handler: { _ in
-            self.chessBoard.promote(pawn: pawn, intoPiece: ChessPiece(row: pawn.row, column: pawn.col, color: pawn.color, type: .rook))
+            self.chessBoard.promote(pawn: pawn, intoPiece: ChessPiece(row: pawn.row, column: pawn.col, color: pawn.color, type: .rook, player: self.playerColor))
         })
         ac.addAction(queen)
         ac.addAction(rook)
