@@ -15,13 +15,6 @@
 		7092D17E1DCFEB1A0056A999 /* Swifty_ChessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092D17D1DCFEB1A0056A999 /* Swifty_ChessTests.swift */; };
 		70C84AB61DC44619000F2BD9 /* ChessBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AB51DC44619000F2BD9 /* ChessBoard.swift */; };
 		70C84AB81DC44643000F2BD9 /* ChessPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AB71DC44643000F2BD9 /* ChessPiece.swift */; };
-		70C84ABA1DC446C2000F2BD9 /* Pawn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AB91DC446C2000F2BD9 /* Pawn.swift */; };
-		70C84ABC1DC44785000F2BD9 /* DummyPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84ABB1DC44785000F2BD9 /* DummyPiece.swift */; };
-		70C84ABE1DC450F9000F2BD9 /* Rook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84ABD1DC450F9000F2BD9 /* Rook.swift */; };
-		70C84AC01DC4519B000F2BD9 /* Knight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84ABF1DC4519B000F2BD9 /* Knight.swift */; };
-		70C84AC21DC56AA0000F2BD9 /* Bishop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AC11DC56AA0000F2BD9 /* Bishop.swift */; };
-		70C84AC51DC56AE0000F2BD9 /* Queen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AC41DC56AE0000F2BD9 /* Queen.swift */; };
-		70C84AC71DC56B0A000F2BD9 /* King.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AC61DC56B0A000F2BD9 /* King.swift */; };
 		70C84AC91DC8173F000F2BD9 /* BoardIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AC81DC8173F000F2BD9 /* BoardIndex.swift */; };
 		70C84ACB1DC81DE0000F2BD9 /* ChessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84ACA1DC81DE0000F2BD9 /* ChessCell.swift */; };
 		70C84ACD1DC8524C000F2BD9 /* ChessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84ACC1DC8524C000F2BD9 /* ChessVC.swift */; };
@@ -50,13 +43,6 @@
 		7092D17F1DCFEB1A0056A999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		70C84AB51DC44619000F2BD9 /* ChessBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChessBoard.swift; sourceTree = "<group>"; };
 		70C84AB71DC44643000F2BD9 /* ChessPiece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChessPiece.swift; sourceTree = "<group>"; };
-		70C84AB91DC446C2000F2BD9 /* Pawn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pawn.swift; sourceTree = "<group>"; };
-		70C84ABB1DC44785000F2BD9 /* DummyPiece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyPiece.swift; sourceTree = "<group>"; };
-		70C84ABD1DC450F9000F2BD9 /* Rook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rook.swift; sourceTree = "<group>"; };
-		70C84ABF1DC4519B000F2BD9 /* Knight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Knight.swift; sourceTree = "<group>"; };
-		70C84AC11DC56AA0000F2BD9 /* Bishop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bishop.swift; sourceTree = "<group>"; };
-		70C84AC41DC56AE0000F2BD9 /* Queen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queen.swift; sourceTree = "<group>"; };
-		70C84AC61DC56B0A000F2BD9 /* King.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = King.swift; sourceTree = "<group>"; };
 		70C84AC81DC8173F000F2BD9 /* BoardIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardIndex.swift; sourceTree = "<group>"; };
 		70C84ACA1DC81DE0000F2BD9 /* ChessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChessCell.swift; sourceTree = "<group>"; };
 		70C84ACC1DC8524C000F2BD9 /* ChessVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChessVC.swift; sourceTree = "<group>"; };
@@ -153,13 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				70C84AB71DC44643000F2BD9 /* ChessPiece.swift */,
-				70C84AB91DC446C2000F2BD9 /* Pawn.swift */,
-				70C84ABB1DC44785000F2BD9 /* DummyPiece.swift */,
-				70C84ABD1DC450F9000F2BD9 /* Rook.swift */,
-				70C84ABF1DC4519B000F2BD9 /* Knight.swift */,
-				70C84AC11DC56AA0000F2BD9 /* Bishop.swift */,
-				70C84AC41DC56AE0000F2BD9 /* Queen.swift */,
-				70C84AC61DC56B0A000F2BD9 /* King.swift */,
 			);
 			name = Pieces;
 			sourceTree = "<group>";
@@ -269,18 +248,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				7076DB671DC43B2800F01924 /* ChessViewController.swift in Sources */,
-				70C84ABE1DC450F9000F2BD9 /* Rook.swift in Sources */,
-				70C84ABC1DC44785000F2BD9 /* DummyPiece.swift in Sources */,
 				70C84AB61DC44619000F2BD9 /* ChessBoard.swift in Sources */,
 				70C84ACD1DC8524C000F2BD9 /* ChessVC.swift in Sources */,
-				70C84AC01DC4519B000F2BD9 /* Knight.swift in Sources */,
-				70C84AC21DC56AA0000F2BD9 /* Bishop.swift in Sources */,
-				70C84AC71DC56B0A000F2BD9 /* King.swift in Sources */,
 				70C84ACB1DC81DE0000F2BD9 /* ChessCell.swift in Sources */,
-				70C84AC51DC56AE0000F2BD9 /* Queen.swift in Sources */,
 				70725B4F1DC9784F00C1A506 /* BoardCell.swift in Sources */,
 				7076DB651DC43B2800F01924 /* AppDelegate.swift in Sources */,
-				70C84ABA1DC446C2000F2BD9 /* Pawn.swift in Sources */,
 				70C84AB81DC44643000F2BD9 /* ChessPiece.swift in Sources */,
 				70C84AC91DC8173F000F2BD9 /* BoardIndex.swift in Sources */,
 			);
@@ -489,6 +461,7 @@
 				7092D1831DCFEB1A0056A999 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

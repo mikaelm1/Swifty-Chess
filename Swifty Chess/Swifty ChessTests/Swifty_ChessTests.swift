@@ -25,13 +25,13 @@ class Swifty_ChessTests: XCTestCase {
     
     func testInitialBoard() {
         // test some white pieces
-        XCTAssertTrue(chessBoard.board[0][0] is Rook && chessBoard.board[0][0].color == .white, "There should be a rook at (0,0)")
-        XCTAssertTrue(chessBoard.board[0][4] is King && chessBoard.board[0][4].color
+        XCTAssertTrue(chessBoard.board[0][0].type == .rook && chessBoard.board[0][0].color == .white, "There should be a rook at (0,0)")
+        XCTAssertTrue(chessBoard.board[0][4].type == .king && chessBoard.board[0][4].color
             == .white, "The white king should be at (0,4)")
         
         // test some black pieces
-        XCTAssertTrue(chessBoard.board[7][7] is Rook && chessBoard.board[7][7].color == .black, "Black rook should be at (7,7)")
-        XCTAssertTrue(chessBoard.board[7][4] is King && chessBoard.board[7][4].color == .black, "Black king should be at (7,4)")
+        XCTAssertTrue(chessBoard.board[7][7].type == .rook && chessBoard.board[7][7].color == .black, "Black rook should be at (7,7)")
+        XCTAssertTrue(chessBoard.board[7][4].type == .king && chessBoard.board[7][4].color == .black, "Black king should be at (7,4)")
     }
     
     func testOnlyTwoKingsLeft() {
@@ -53,8 +53,8 @@ class Swifty_ChessTests: XCTestCase {
         // remove all but the kings from board
         for row in 0...7 {
             for col in 0...7 {
-                if !(chessBoard.board[row][col] is King) && !(chessBoard.board[row][col] is DummyPiece) {
-                    chessBoard.board[row][col] = DummyPiece(row: row, column: col)
+                if chessBoard.board[row][col].type != .king && chessBoard.board[row][col].type != .dummy {
+                    chessBoard.board[row][col] = ChessPiece(row: row, column: col, color: .clear, type: .dummy)
                 }
             }
         }
@@ -77,10 +77,10 @@ class Swifty_ChessTests: XCTestCase {
         mockVC.chessBoard = self.chessBoard
         chessBoard.delegate = mockVC
         mockVC.drawBoard()
-        let blackKing = King(row: 0, column: 0, color: .black)
-        let blackBishop = Bishop(row: 0, column: 1, color: .black)
-        let whiteKing = King(row: 2, column: 1, color: .white)
-        let whiteRook = Rook(row: 7, column: 7, color: .white)
+        let blackKing = ChessPiece(row: 0, column: 0, color: .black, type: .king)
+        let blackBishop = ChessPiece(row: 0, column: 1, color: .black, type: .bishop)
+        let whiteKing = ChessPiece(row: 2, column: 1, color: .white, type: .king)
+        let whiteRook = ChessPiece(row: 7, column: 7, color: .white, type: .rook)
         chessBoard.board[0][0] = blackKing
         chessBoard.board[0][1] = blackBishop
         chessBoard.board[2][1] = whiteKing
@@ -92,8 +92,8 @@ class Swifty_ChessTests: XCTestCase {
     
     func testCastling() {
         let blackKing = chessBoard.board[7][4]
-        chessBoard.board[7][5] = DummyPiece(row: 7, column: 5)
-        chessBoard.board[7][6] = DummyPiece(row: 7, column: 6)
+        chessBoard.board[7][5] = ChessPiece(row: 7, column: 5, color: .clear, type: .dummy)
+        chessBoard.board[7][6] = ChessPiece(row: 7, column: 6, color: .clear, type: .dummy)
         var moves = chessBoard.getPossibleMoves(forPiece: blackKing)
         for move in moves {
             if move.row == 7 && move.column == 2 {
@@ -102,7 +102,7 @@ class Swifty_ChessTests: XCTestCase {
         }
         let twoCellsOver = BoardIndex(row: 7, column: 6)
         XCTAssertTrue(moves.contains(twoCellsOver), "Two cells over not present")
-        (blackKing as! King).firstMove = false
+        blackKing.firstMove = false
         moves = chessBoard.getPossibleMoves(forPiece: blackKing)
         XCTAssertFalse(moves.contains(twoCellsOver), "Two cells over shoud not be available")
     }
@@ -153,11 +153,11 @@ class Swifty_ChessTests: XCTestCase {
         mockVC.chessBoard = chessBoard
         chessBoard.delegate = mockVC
         eraseBoard()
-        chessBoard.board[0][0] = DummyPiece(row: 0, column: 0)
-        chessBoard.board[1][0] = DummyPiece(row: 1, column: 0)
+        chessBoard.board[0][0] = ChessPiece(row: 0, column: 0, color: .clear, type: .dummy)
+        chessBoard.board[1][0] = ChessPiece(row: 1, column: 0, color: .clear, type: .dummy)
         mockVC.drawBoard()
         mockVC.playerTurn = .black
-        let pawn = Pawn(row: 1, column: 0, color: .black)
+        let pawn = ChessPiece(row: 1, column: 0, color: .black, type: .pawn)
         chessBoard.board[1][0] = pawn
         chessBoard.delegate?.boardUpdated()
         chessBoard.move(chessPiece: pawn, fromIndex: BoardIndex(row: 1, column: 0), toIndex: BoardIndex(row: 0, column: 0))
@@ -168,7 +168,7 @@ class Swifty_ChessTests: XCTestCase {
     func eraseBoard() {
         for row in 0...7 {
             for col in 0...7 {
-                chessBoard.board[row][col] = DummyPiece(row: row, column: col)
+                chessBoard.board[row][col] = ChessPiece(row: row, column: col, color: .clear, type: .dummy)
             }
         }
     }
