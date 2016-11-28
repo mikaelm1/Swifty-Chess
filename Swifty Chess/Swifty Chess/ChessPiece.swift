@@ -58,7 +58,6 @@ class ChessPiece {
     
     /** Checks to see if the direction the piece is moving is the way this piece type is allowed to move. Doesn't take into account the state of the board */
     func isMovementAppropriate(toIndex dest: BoardIndex) -> Bool {
-        
         switch type {
         case .pawn:
             return checkPawn(dest: dest)
@@ -75,7 +74,6 @@ class ChessPiece {
         case .dummy:
             return false 
         }
-        return false
     }
     
     private func checkPawn(dest: BoardIndex) -> Bool {

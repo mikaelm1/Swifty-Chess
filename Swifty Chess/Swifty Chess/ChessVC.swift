@@ -10,7 +10,7 @@ import UIKit
 
 class ChessVC: UIViewController {
     
-    var chessBoard = ChessBoard()
+    var chessBoard = ChessBoard(playerColor: .black)
     var boardCells = [[BoardCell]]()
     var pieceBeingMoved: ChessPiece? = nil
     var possibleMoves = [BoardIndex]()

@@ -19,59 +19,61 @@ class ChessBoard {
     
     var board = [[ChessPiece]]()
     var delegate: ChessBoardDelegate?
+    var playerColor: UIColor!
     
-    init() {
-        
+    init(playerColor color: UIColor) {
+        self.playerColor = color
         let oneRow = Array(repeating: ChessPiece(row: 0, column: 0, color: .clear, type: .dummy), count: 8)
         board = Array(repeating: oneRow, count: 8)
         startNewGame()
     }
     
     func startNewGame() {
+        let opponent: UIColor = playerColor == UIColor.white ? .black : .white
         for row in 0...7 {
             for col in 0...7 {
                 switch row {
                 case 0: // First row of chess board
                     switch col { // determine what piece to put in each column of first row
                     case 0:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .rook)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .rook)
                     case 1:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .knight)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .knight)
                     case 2:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .bishop)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .bishop)
                     case 3:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .queen)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .queen)
                     case 4:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .king)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .king)
                     case 5:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .bishop)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .bishop)
                     case 6:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .knight)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .knight)
                     default:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .rook)
+                        board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .rook)
                     }
                 case 1:
-                    board[row][col] = ChessPiece(row: row, column: col, color: .white, type: .pawn)
+                    board[row][col] = ChessPiece(row: row, column: col, color: opponent, type: .pawn)
                 case 6:
-                    board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .pawn)
+                    board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .pawn)
                 case 7:
                     switch col { // determine what piece to put in each column of first row
                     case 0:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .rook)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .rook)
                     case 1:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .knight)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .knight)
                     case 2:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .bishop)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .bishop)
                     case 3:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .queen)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .queen)
                     case 4:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .king)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .king)
                     case 5:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .bishop)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .bishop)
                     case 6:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .knight)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .knight)
                     default:
-                        board[row][col] = ChessPiece(row: row, column: col, color: .black, type: .rook)
+                        board[row][col] = ChessPiece(row: row, column: col, color: playerColor, type: .rook)
                     }
                 default:
                     board[row][col] = ChessPiece(row: row, column: col, color: .clear, type: .dummy)
