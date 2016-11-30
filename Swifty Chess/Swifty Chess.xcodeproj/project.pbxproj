@@ -18,6 +18,7 @@
 		70C84AC91DC8173F000F2BD9 /* BoardIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84AC81DC8173F000F2BD9 /* BoardIndex.swift */; };
 		70C84ACB1DC81DE0000F2BD9 /* ChessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84ACA1DC81DE0000F2BD9 /* ChessCell.swift */; };
 		70C84ACD1DC8524C000F2BD9 /* ChessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C84ACC1DC8524C000F2BD9 /* ChessVC.swift */; };
+		70FDE1E21DEEA1DD0036C11D /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FDE1E11DEEA1DD0036C11D /* History.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		70C84AC81DC8173F000F2BD9 /* BoardIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardIndex.swift; sourceTree = "<group>"; };
 		70C84ACA1DC81DE0000F2BD9 /* ChessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChessCell.swift; sourceTree = "<group>"; };
 		70C84ACC1DC8524C000F2BD9 /* ChessVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChessVC.swift; sourceTree = "<group>"; };
+		70FDE1E11DEEA1DD0036C11D /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				70C84AC31DC56ACA000F2BD9 /* Pieces */,
 				70C84AB51DC44619000F2BD9 /* ChessBoard.swift */,
 				70C84AC81DC8173F000F2BD9 /* BoardIndex.swift */,
+				70FDE1E11DEEA1DD0036C11D /* History.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70FDE1E21DEEA1DD0036C11D /* History.swift in Sources */,
 				70C84AB61DC44619000F2BD9 /* ChessBoard.swift in Sources */,
 				70C84ACD1DC8524C000F2BD9 /* ChessVC.swift in Sources */,
 				70C84ACB1DC81DE0000F2BD9 /* ChessCell.swift in Sources */,

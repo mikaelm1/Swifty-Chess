@@ -20,6 +20,7 @@ class ChessBoard {
     var board = [[ChessPiece]]()
     var delegate: ChessBoardDelegate?
     var playerColor: UIColor!
+    var history = History()
     
     init(playerColor color: UIColor) {
         self.playerColor = color
@@ -136,9 +137,11 @@ class ChessBoard {
         return realPossibleMoves
     }
     
-    /// Makes the given move and checks for game over/tie and reports back through delegates
+    /// Makes the given move and checks for gameOver/tie and reports back through delegates
     func move(chessPiece: ChessPiece, fromIndex source: BoardIndex, toIndex dest: BoardIndex) {
-        
+        let dict = ["start": source, "end": dest]
+        history.moves.append(dict)
+        history.showHistory()
         if chessPiece.type == .king {
             chessPiece.firstMove = false
             if isMoveTwoCellsOver(forKing: chessPiece, move: dest) {
