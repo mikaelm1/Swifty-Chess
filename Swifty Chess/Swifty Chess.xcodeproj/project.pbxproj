@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		70234E2F1DEBF51200E0EC0C /* ChessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70234E2E1DEBF51200E0EC0C /* ChessView.swift */; };
 		70725B4F1DC9784F00C1A506 /* BoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70725B4E1DC9784F00C1A506 /* BoardCell.swift */; };
 		7076DB651DC43B2800F01924 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7076DB641DC43B2800F01924 /* AppDelegate.swift */; };
 		7076DB6C1DC43B2800F01924 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7076DB6B1DC43B2800F01924 /* Assets.xcassets */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		70234E2E1DEBF51200E0EC0C /* ChessView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChessView.swift; sourceTree = "<group>"; };
 		70725B4E1DC9784F00C1A506 /* BoardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardCell.swift; sourceTree = "<group>"; };
 		7076DB611DC43B2800F01924 /* Swifty Chess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swifty Chess.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7076DB641DC43B2800F01924 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			children = (
 				70C84ACA1DC81DE0000F2BD9 /* ChessCell.swift */,
 				70725B4E1DC9784F00C1A506 /* BoardCell.swift */,
+				70234E2E1DEBF51200E0EC0C /* ChessView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 				70C84AB61DC44619000F2BD9 /* ChessBoard.swift in Sources */,
 				70C84ACD1DC8524C000F2BD9 /* ChessVC.swift in Sources */,
 				70C84ACB1DC81DE0000F2BD9 /* ChessCell.swift in Sources */,
+				70234E2F1DEBF51200E0EC0C /* ChessView.swift in Sources */,
 				70725B4F1DC9784F00C1A506 /* BoardCell.swift in Sources */,
 				7076DB651DC43B2800F01924 /* AppDelegate.swift in Sources */,
 				70C84AB81DC44643000F2BD9 /* ChessPiece.swift in Sources */,
