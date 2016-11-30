@@ -25,4 +25,10 @@ class History {
         }
     }
     
+    func movesAsIndices() -> [BoardIndex] {
+        let indices = [BoardIndex]()
+        
+        return indices
+    }
+    
 }

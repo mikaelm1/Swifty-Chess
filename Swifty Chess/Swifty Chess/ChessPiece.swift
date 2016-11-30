@@ -52,7 +52,8 @@ class ChessPiece {
     }
     
     func updateIndex() {
-        bIndex.updateValue()
+        let dir: BDirection = playerColor == .white ? .bottom : .top
+        bIndex.updateValue(fromDirection: dir)
         //showPieceInfo()
     }
     
