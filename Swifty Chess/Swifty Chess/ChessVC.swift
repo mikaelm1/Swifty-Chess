@@ -47,7 +47,6 @@ class ChessVC: UIViewController {
         UIApplication.shared.statusBarStyle = .lightContent
         
         chessBoard.delegate = self
-        
         drawBoard()
         setupViews()
     }
@@ -125,7 +124,7 @@ extension ChessVC: BoardCellDelegate {
     
     func didSelect(cell: BoardCell, atRow row: Int, andColumn col: Int) {
         //print("Selected cell at: \(row), \(col)")
-        
+        chessBoard.board[row][col].showPieceInfo() 
         // Check if making a move (if had selected piece before)
         if let movingPiece = pieceBeingMoved, movingPiece.color == playerTurn {
             let source = BoardIndex(row: movingPiece.row, column: movingPiece.col)

@@ -108,7 +108,7 @@ class ChessBoard {
         // make sure that by making this move, the player is not exposing his king
         var realPossibleMoves = [BoardIndex]()
         if piece.type == .king {
-            print("Checking \(possibleMoves.count) moves for king")
+            //print("Checking \(possibleMoves.count) moves for king")
             for move in possibleMoves {
                 if !canOpponentAttack(playerKing: piece, ifMovedTo: move) {
                     //print("Appending move for king")
@@ -328,12 +328,12 @@ class ChessBoard {
     }
     
     func canOpponentAttack(playerKing king: ChessPiece, ifMovedTo dest: BoardIndex) -> Bool {
-        print("inside canOpponentAttack(playerKing:)")
+        //print("inside canOpponentAttack(playerKing:)")
         let opponent: UIColor = king.color == .white ? .black : .white
         if opponent == .black && king.color == .white {
-            print("Checking if black opponent can attack white king")
+            //print("Checking if black opponent can attack white king")
         } else if opponent == .white && king.color == .black {
-            print("Checking if white opponent can attack black king")
+            //print("Checking if white opponent can attack black king")
         }
         for row in 0...7 {
             for col in 0...7 {
