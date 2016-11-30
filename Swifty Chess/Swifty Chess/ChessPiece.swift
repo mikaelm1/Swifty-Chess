@@ -20,8 +20,18 @@ enum PieceType {
 
 class ChessPiece {
     
-    var row: Int
-    var col: Int
+    var row: Int = 0 {
+        didSet {
+            updateIndex()
+        }
+    }
+    var col: Int = 0 {
+        didSet {
+            updateIndex()
+        }
+    }
+    
+    var bIndex: BoardIndex
     var symbol: String
     var color: UIColor
     var type: PieceType
@@ -33,11 +43,24 @@ class ChessPiece {
     init(row: Int, column: Int, color: UIColor, type: PieceType, player: UIColor) {
         self.row = row
         self.col = column
+        self.bIndex = BoardIndex(row: row, column: col)
         self.color = color
         self.type = type
         self.symbol = ""
         self.playerColor = player 
         setupSymbol()
+    }
+    
+    func updateIndex() {
+        let dir: BDirection = playerColor == .white ? .bottom : .top
+        bIndex.updateValue(fromDirection: dir)
+        //showPieceInfo()
+    }
+    
+    func showPieceInfo() {
+        print("PIECE============")
+        print("Value Row: \(bIndex.valueRow.rawValue)")
+        print("Value Col: \(bIndex.valueCol.rawValue)")
     }
     
     private func setupSymbol() {

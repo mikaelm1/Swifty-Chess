@@ -5,8 +5,8 @@ xcode_scheme: Swifty Chess/Swifty Chess
 xcode_sdk: iphonesimulator10.0 
 
 before install:
-  - brew update
-  - brew install xctool
+  # - brew update
+  # - brew install xctool
 
 script:
 - cd Swifty\ Chess/

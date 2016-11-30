@@ -18,7 +18,7 @@ class BoardCell: UIView {
     var column: Int
     var piece: ChessPiece
     var color: UIColor
-    var delegate: ChessVC?
+    var delegate: BoardCellDelegate?
     
     lazy var invisibleButton: UIButton = {
         let b = UIButton(type: .system)
